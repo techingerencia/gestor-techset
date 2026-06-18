@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Gestor — Techset</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
+
+  :root {
+    --bg: #f5f4f0;
+    --white: #ffffff;
+    --border: #e2e0d8;
+    --text: #1a1a18;
+    --muted: #8a8880;
+    --techin: #4f8ef7;
+    --techin-soft: #eff6ff;
+    --techout: #e8531e;
+    --techout-soft: #fff2ee;
+    --green: #16a34a;
+    --green-soft: #f0fdf4;
+    --green-check: #22c55e;
+    --yellow: #d97706;
+    --yellow-soft: #fffbeb;
+    --red: #dc2626;
+    --red-soft: #fef2f2;
+    --purple: #7c3aed;
+    --purple-soft: #f5f3ff;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .logo .t { color: var(--techin); }
+  .logo .o { color: var(--techout); }
+  .logo .g { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 4px; }
+
+  .date-pill {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 0;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    padding: 10px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .tab-btn.active { font-weight: 600; }
+  .tab-btn.a-lanc { color: var(--techin); border-bottom-color: var(--techin); }
+  .tab-btn.a-hist { color: var(--purple); border-bottom-color: var(--purple); }
+  .tab-btn.a-rel { color: var(--green); border-bottom-color: var(--green); }
+
+  /* MAIN */
+  main { max-width: 520px; margin: 0 auto; padding: 20px 16px; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION LABEL */
+  .sec-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--muted);
+    margin: 20px 0 8px 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .card-header {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-header .ch-icon { font-size: 18px; flex-shrink: 0; }
+  .card-header .ch-title { font-size: 13px; font-weight: 700; }
+  .card-header .ch-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .card-header .ch-pts {
+    margin-left: auto;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--border);
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .card-body { padding: 14px 16px; }
+
+  /* STARS */
+  .stars-wrap { margin-top: 6px; }
+  .stars-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .stars-label { font-size: 12px; color: var(--muted); }
+  .stars-pts {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .stars-row { display: flex; gap: 6px; }
+  .star-btn {
+    flex: 1;
+    height: 38px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .star-btn.on { background: var(--yellow-soft); border-color: var(--yellow); }
+
+  /* OBS */
+  .obs-input {
+    width: 100%;
+    margin-top: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    resize: none;
+    min-height: 52px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .obs-input:focus { border-color: #bbb; background: var(--white); }
+  .obs-input::placeholder { color: var(--muted); }
+
+  /* COLABORADOR SELECTOR */
+  .colab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .colab-btn {
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    box-shadow: var(--shadow);
+  }
+
+  .colab-btn .cb-unidade {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .colab-btn .cb-nome {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+  }
+
+  .colab-btn .cb-funcao {
+    font-size: 11px;
+    color: var(--muted);
+    display: block;
+    margin-top: 1px;
+  }
+
+  .colab-btn.sel-victor { border-color: var(--techin); background: var(--techin-soft); }
+  .colab-btn.sel-victor .cb-unidade,.colab-btn.sel-victor .cb-nome { color: var(--techin); }
+  .colab-btn.sel-lorena { border-color: #10b981; background: #ecfdf5; }
+  .colab-btn.sel-lorena .cb-unidade,.colab-btn.sel-lorena .cb-nome { color: #10b981; }
+  .colab-btn.sel-janse { border-color: var(--yellow); background: var(--yellow-soft); }
+  .colab-btn.sel-janse .cb-unidade,.colab-btn.sel-janse .cb-nome { color: var(--yellow); }
+  .colab-btn.sel-tmanha { border-color: var(--techout); background: var(--techout-soft); }
+  .colab-btn.sel-tmanha .cb-unidade,.colab-btn.sel-tmanha .cb-nome { color: var(--techout); }
+  .colab-btn.sel-ttarde { border-color: var(--purple); background: var(--purple-soft); }
+  .colab-btn.sel-ttarde .cb-unidade,.colab-btn.sel-ttarde .cb-nome { color: var(--purple); }
+
+  /* PROGRESSO */
+  .prog-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .prog-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; color: var(--muted); }
+  .prog-top strong { color: var(--text); }
+  .prog-track { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; transition: width 0.3s; background: var(--techin); }
+
+  /* SCORE PREVIEW */
+  .score-preview {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+  }
+  .sp-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .sp-score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+  .sp-max { font-size: 13px; color: var(--muted); }
+  .sp-pct { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* SUBMIT */
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn-submit:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-primary { background: var(--techin); color: white; box-shadow: 0 4px 12px rgba(79,142,247,0.25); }
+  .btn-primary:not(:disabled):hover { background: #2563eb; }
+
+  /* DISCORDÂNCIAS */
+  .disc-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .disc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .disc-item .di-label { font-size: 13px; color: var(--text); flex: 1; }
+  .disc-counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .disc-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    color: var(--muted);
+    transition: all 0.12s;
+  }
+  .disc-btn:hover { border-color: #aaa; color: var(--text); }
+  .disc-btn.minus:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+  .disc-btn.plus:hover { border-color: var(--techin); color: var(--techin); background: var(--techin-soft); }
+  .disc-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+  }
+  .disc-val.has-disc { color: var(--red); }
+
+  /* ALERT BOX */
+  .alert-box {
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-blue { background: var(--techin-soft); border: 1px solid rgba(79,142,247,0.2); }
+  .alert-yellow { background: var(--yellow-soft); border: 1px solid rgba(217,119,6,0.2); }
+  .alert-green { background: var(--green-soft); border: 1px solid rgba(22,163,74,0.2); }
+  .alert-red { background: var(--red-soft); border: 1px solid rgba(220,38,38,0.2); }
+  .alert-box .ai { font-size: 16px; flex-shrink: 0; }
+  .alert-box strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .alert-box p { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 0; }
+
+  /* DONE */
+  .done-screen { display: none; text-align: center; padding: 28px 16px; }
+  .done-screen.visible { display: block; }
+  .done-icon { font-size: 44px; margin-bottom: 10px; display: block; }
+  .done-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .done-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
+
+  .btn-novo {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-novo:hover { border-color: #aaa; color: var(--text); }
+
+  /* HISTÓRICO */
+  .hist-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .hist-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    cursor: pointer;
+  }
+
+  .hist-header .hh-left h4 { font-size: 14px; font-weight: 700; }
+  .hist-header .hh-left span { font-size: 11px; color: var(--muted); }
+
+  .hist-score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .hist-body { padding: 14px 16px; display: none; }
+  .hist-body.open { display: block; }
+
+  .hist-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 12px;
+  }
+  .hist-row:last-child { border-bottom: none; }
+  .hist-row .hr-label { color: var(--muted); flex: 1; }
+  .hist-row .hr-stars { color: var(--yellow); letter-spacing: 1px; font-size: 13px; }
+  .hist-row .hr-pts { font-weight: 700; font-size: 12px; margin-left: 8px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 16px;
+    color: var(--muted);
+  }
+  .empty-state .es-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
+
+  /* RELATÓRIO */
+  .rel-tipo-sel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .rel-tipo-btn {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .rel-tipo-btn.active-sem { border-color: var(--techin); background: var(--techin-soft); color: var(--techin); }
+  .rel-tipo-btn.active-men { border-color: var(--purple); background: var(--purple-soft); color: var(--purple); }
+
+  .score-big-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .sbc-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .sbc-nome { font-size: 15px; font-weight: 700; }
+  .sbc-funcao { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .sbc-score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .sbc-score .sbc-max { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  .sbc-bar-track { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+  .sbc-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+
+  .sbc-pct { font-size: 11px; color: var(--muted); text-align: right; margin-bottom: 10px; }
+
+  .sbc-pontos-fracos {
+    background: var(--red-soft);
+    border: 1px solid rgba(220,38,38,0.15);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .sbc-pontos-fracos .spf-title { font-weight: 700; color: var(--red); margin-bottom: 4px; }
+  .sbc-pontos-fracos ul { padding-left: 14px; color: var(--muted); }
+  .sbc-pontos-fracos li { margin-bottom: 2px; }
+
+  .sbc-pontos-fortes {
+    background: var(--green-soft);
+    border: 1px solid rgba(22,163,74,0.15);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .sbc-pontos-fortes .spf-title { font-weight: 700; color: var(--green); margin-bottom: 4px; }
+  .sbc-pontos-fortes ul { padding-left: 14px; color: var(--muted); }
+  .sbc-pontos-fortes li { margin-bottom: 2px; }
+
+  .sbc-obs {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+  .tag-ok { background: var(--green-soft); color: var(--green); }
+  .tag-warn { background: var(--yellow-soft); color: var(--yellow); }
+  .tag-crit { background: var(--red-soft); color: var(--red); }
+
+  .btn-whatsapp {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #25d366;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px rgba(37,211,102,0.25);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-whatsapp:hover { background: #1fb855; }
+
+  .divider-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 10px;
+  }
+  .divider-lbl::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .semana-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .ss-label { font-size: 12px; color: var(--muted); flex: 1; }
+  .ss-val { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; }
+  .ss-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: all 0.12s;
+  }
+  .ss-btn:hover { border-color: #aaa; color: var(--text); }
+
+  /* INPUT SEMANA */
+  .input-semana {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .input-semana label { font-size: 12px; font-weight: 600; color: var(--muted); display: block; margin-bottom: 6px; }
+  .input-semana input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+  }
+  .input-semana input:focus { border-color: var(--techin); background: var(--white); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo"><span class="t">Tech</span><span class="o">set</span><span class="g"> · Gestor</span></div>
+    <div class="date-pill" id="datePill">—</div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn a-lanc active" onclick="showTab('lanc',this)">✏️ Lançamento</button>
+    <button class="tab-btn" onclick="showTab('hist',this)">📁 Histórico</button>
+    <button class="tab-btn" onclick="showTab('rel',this)">📊 Relatório</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- ========== LANÇAMENTO ========== -->
+  <div class="panel active" id="panel-lanc">
+
+    <div class="alert-box alert-blue">
+      <span class="ai">👔</span>
+      <div>
+        <strong>Avaliação semanal</strong>
+        <p>Avalie cada colaborador com base no que observou e nos checklists recebidos pelo WhatsApp. Notas de 1 a 5 estrelas por critério.</p>
+      </div>
+    </div>
+
+    <!-- SEMANA DE REFERÊNCIA -->
+    <div class="input-semana">
+      <label>📅 Semana de referência</label>
+      <input type="week" id="semana-ref" />
+    </div>
+
+    <!-- SELETOR DE COLABORADOR -->
+    <div class="sec-label">Selecionar colaborador</div>
+    <div class="colab-grid">
+      <div class="colab-btn" id="cb-victor" onclick="selecionarColab('victor')">
+        <span class="cb-unidade">Techin</span>
+        <span class="cb-nome">Victor</span>
+        <span class="cb-funcao">Liderança operacional</span>
+      </div>
+      <div class="colab-btn" id="cb-lorena" onclick="selecionarColab('lorena')">
+        <span class="cb-unidade">Techin</span>
+        <span class="cb-nome">Lorena</span>
+        <span class="cb-funcao">Produção e técnica</span>
+      </div>
+      <div class="colab-btn" id="cb-janse" onclick="selecionarColab('janse')">
+        <span class="cb-unidade">Techin</span>
+        <span class="cb-nome">Janse</span>
+        <span class="cb-funcao">Frente de loja</span>
+      </div>
+      <div class="colab-btn" id="cb-tmanha" onclick="selecionarColab('tmanha')">
+        <span class="cb-unidade">Techout</span>
+        <span class="cb-nome">Turno Manhã</span>
+        <span class="cb-funcao">07h – 16h</span>
+      </div>
+      <div class="colab-btn" id="cb-ttarde" onclick="selecionarColab('ttarde')">
+        <span class="cb-unidade">Techout</span>
+        <span class="cb-nome">Turno Tarde</span>
+        <span class="cb-funcao">13h – 22h</span>
+      </div>
+    </div>
+
+    <!-- FORMULÁRIO DINÂMICO -->
+    <div id="form-colab" style="display:none">
+
+      <div class="prog-wrap">
+        <div class="prog-top"><span>Critérios avaliados</span><strong id="prog-txt">0 / 0</strong></div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      </div>
+
+      <div class="score-preview">
+        <div>
+          <div class="sp-label">Pontuação atual</div>
+          <div class="sp-pct" id="sp-pct">—</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sp-score" id="sp-score" style="color:var(--muted)">0</div>
+          <div class="sp-max" id="sp-max">/ 0 pts</div>
+        </div>
+      </div>
+
+      <div id="criterios-wrap"></div>
+
+      <!-- DISCORDÂNCIAS DE TURNO (só para Techout) -->
+      <div id="disc-section" style="display:none">
+        <div class="sec-label">🔄 Discordâncias de turno recebidas</div>
+        <div class="card">
+          <div class="card-body">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Com base nos checklists recebidos pelo WhatsApp, quantas discordâncias foram registradas nesta semana?</div>
+            <div class="disc-grid" id="disc-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OBS GERAL -->
+      <div class="sec-label">Observações gerais</div>
+      <div class="card">
+        <div class="card-body">
+          <textarea class="obs-input" id="obs-geral" placeholder="Pontos positivos, situações da semana, melhorias observadas..." style="min-height:70px;"></textarea>
+        </div>
+      </div>
+
+      <button class="btn-submit btn-primary" id="btn-salvar" onclick="salvarAvaliacao()" disabled>
+        Salvar avaliação
+      </button>
+
+    </div>
+
+    <!-- DONE -->
+    <div class="done-screen" id="done-lanc">
+      <span class="done-icon">💾</span>
+      <div class="done-title" id="done-lanc-title">Avaliação salva!</div>
+      <div class="done-sub" id="done-lanc-sub">—</div>
+      <button class="btn-submit btn-primary" style="margin-bottom:10px;" onclick="proximoColab()">Avaliar próximo colaborador</button>
+      <button class="btn-novo" onclick="resetLanc()">Recomeçar</button>
+    </div>
+
+  </div>
+
+  <!-- ========== HISTÓRICO ========== -->
+  <div class="panel" id="panel-hist">
+    <div id="hist-content"></div>
+  </div>
+
+  <!-- ========== RELATÓRIO ========== -->
+  <div class="panel" id="panel-rel">
+
+    <div class="rel-tipo-sel">
+      <button class="rel-tipo-btn active-sem" id="btn-sem" onclick="selTipoRel('semanal',this)">📋 Semanal</button>
+      <button class="rel-tipo-btn" id="btn-men" onclick="selTipoRel('mensal',this)">📈 Mensal</button>
+    </div>
+
+    <div class="semana-selector" id="sel-semana">
+      <button class="ss-btn" onclick="navSemana(-1)">‹</button>
+      <div style="flex:1;text-align:center">
+        <div class="ss-label">Semana</div>
+        <div class="ss-val" id="ss-val">—</div>
+      </div>
+      <button class="ss-btn" onclick="navSemana(1)">›</button>
+    </div>
+
+    <div id="rel-output"></div>
+
+  </div>
+
+</main>
+
+<script>
+
+// ========== STORAGE ==========
+const STORE = {
+  get: k => { try { return JSON.parse(localStorage.getItem('techset_' + k)) } catch(e) { return null } },
+  set: (k,v) => localStorage.setItem('techset_' + k, JSON.stringify(v)),
+  push: (k,v) => { const a = STORE.get(k) || []; a.push(v); STORE.set(k,a); }
+};
+
+// ========== CRITÉRIOS ==========
+const CRITERIOS = {
+  victor: [
+    { id:'lista_prod',  label:'Lista de produção entregue no prazo',    max:20 },
+    { id:'lista_comp',  label:'Lista de compras sem emergências',        max:20 },
+    { id:'distrib',     label:'Distribuição de funções na produção',     max:20 },
+    { id:'qualidade',   label:'Padrão de qualidade — rejeição ≤ 1%',    max:25 },
+    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
+  ],
+  lorena: [
+    { id:'receitas',    label:'Reprodução de receitas — fidelidade à ficha', max:25 },
+    { id:'porciona',    label:'Porcionamento dentro da gramatura',            max:25 },
+    { id:'org_espaco',  label:'Organização do espaço e mise-en-place',        max:20 },
+    { id:'acai',        label:'Produção de açaí — qualidade e volume',        max:15 },
+    { id:'assiduid',    label:'Assiduidade e pontualidade',                   max:15 },
+  ],
+  janse: [
+    { id:'atendimento', label:'Atendimento ao cliente — satisfação',     max:25 },
+    { id:'estufa',      label:'Organização da estufa e expositores',     max:20 },
+    { id:'caixa',       label:'Caixa — fechamento sem divergências',     max:20 },
+    { id:'bebidas',     label:'Produção de bebidas e cafés',             max:20 },
+    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
+  ],
+  tmanha: [
+    { id:'org_limp',    label:'Organização e limpeza do espaço',         max:20 },
+    { id:'reabast',     label:'Reabastecimento de geladeiras e salgados',max:20 },
+    { id:'insumos',     label:'Produção de insumos para doces',          max:20 },
+    { id:'desperd',     label:'Controle de desperdício',                 max:15 },
+    { id:'passagem',    label:'Passagem de turno — registro completo',   max:10 },
+    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
+  ],
+  ttarde: [
+    { id:'org_limp',    label:'Organização e limpeza do espaço',         max:20 },
+    { id:'reabast',     label:'Reabastecimento de geladeiras e salgados',max:20 },
+    { id:'insumos',     label:'Produção de insumos para doces',          max:20 },
+    { id:'desperd',     label:'Controle de desperdício e fechamento',    max:15 },
+    { id:'leitura',     label:'Leitura e execução da passagem de turno', max:10 },
+    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
+  ]
+};
+
+const NOMES = { victor:'Victor', lorena:'Lorena', janse:'Janse', tmanha:'Turno Manhã', ttarde:'Turno Tarde' };
+const UNIDADES = { victor:'Techin', lorena:'Techin', janse:'Techin', tmanha:'Techout', ttarde:'Techout' };
+const FUNCOES = { victor:'Liderança operacional', lorena:'Produção e técnica', janse:'Frente de loja', tmanha:'07h – 16h', ttarde:'13h – 22h' };
+const DISC_LABELS = {
+  limpeza: 'Limpeza — chão, bancadas, estufa e pia',
+  equip:   'Equipamentos — misteira, microondas, forno',
+  gelad:   'Geladeira abastecida',
+  salgado: 'Salgados fermentando',
+  embal:   'Salgados anteriores embalados'
+};
+
+const CORES_COLAB = {
+  victor:  { main:'var(--techin)',  sel:'sel-victor' },
+  lorena:  { main:'#10b981',        sel:'sel-lorena' },
+  janse:   { main:'var(--yellow)',  sel:'sel-janse' },
+  tmanha:  { main:'var(--techout)', sel:'sel-tmanha' },
+  ttarde:  { main:'var(--purple)',  sel:'sel-ttarde' },
+};
+
+// ========== STATE ==========
+let colabAtual = null;
+let notas = {};
+let discordancias = {};
+let tipoRel = 'semanal';
+let semanaRel = getSemanaStr(new Date());
+
+// ========== INIT ==========
+const hoje = new Date();
+document.getElementById('datePill').textContent = hoje.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'});
+const semInput = document.getElementById('semana-ref');
+semInput.value = getSemanaStr(hoje);
+semInput.max = getSemanaStr(hoje);
+atualizarSemanaDisplay();
+
+// ========== TABS ==========
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active','a-lanc','a-hist','a-rel'));
+  document.getElementById('panel-' + id).classList.add('active');
+  const classMap = { lanc:'a-lanc', hist:'a-hist', rel:'a-rel' };
+  btn.classList.add('active', classMap[id]);
+  if (id === 'hist') renderHistorico();
+  if (id === 'rel') gerarRelatorio();
+}
+
+// ========== SEMANA ==========
+function getSemanaStr(d) {
+  const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = dt.getUTCDay() || 7;
+  dt.setUTCDate(dt.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((dt - yearStart) / 86400000) + 1) / 7);
+  return `${dt.getUTCFullYear()}-W${String(weekNo).padStart(2,'0')}`;
+}
+
+function semanaStrToLabel(str) {
+  if (!str) return '—';
+  const [ano, sem] = str.split('-W');
+  return `Semana ${sem}/${ano}`;
+}
+
+function navSemana(dir) {
+  const parts = semanaRel.split('-W');
+  let ano = parseInt(parts[0]), sem = parseInt(parts[1]);
+  sem += dir;
+  if (sem < 1) { ano--; sem = 52; }
+  if (sem > 52) { ano++; sem = 1; }
+  semanaRel = `${ano}-W${String(sem).padStart(2,'0')}`;
+  atualizarSemanaDisplay();
+  gerarRelatorio();
+}
+
+function atualizarSemanaDisplay() {
+  document.getElementById('ss-val').textContent = semanaStrToLabel(semanaRel);
+}
+
+// ========== COLABORADOR ==========
+function selecionarColab(colab) {
+  colabAtual = colab;
+  notas = {};
+  discordancias = { limpeza:0, equip:0, gelad:0, salgado:0, embal:0 };
+
+  document.querySelectorAll('.colab-btn').forEach(b => {
+    const id = b.id.replace('cb-','');
+    b.className = 'colab-btn' + (id === colab ? ' sel-'+colab : '');
+  });
+
+  const crits = CRITERIOS[colab];
+  const totalMax = crits.reduce((s,c) => s+c.max, 0);
+
+  document.getElementById('prog-txt').textContent = `0 / ${crits.length}`;
+  document.getElementById('prog-fill').style.width = '0%';
+  document.getElementById('prog-fill').style.background = CORES_COLAB[colab].main;
+  document.getElementById('sp-score').textContent = '0';
+  document.getElementById('sp-score').style.color = 'var(--muted)';
+  document.getElementById('sp-max').textContent = `/ ${totalMax} pts`;
+  document.getElementById('sp-pct').textContent = '—';
+
+  // Renderiza critérios
+  document.getElementById('criterios-wrap').innerHTML = crits.map(c => `
+    <div class="card" id="card-${c.id}">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="ch-title">${c.label}</div>
+        </div>
+        <div class="ch-pts">${c.max} pts</div>
+      </div>
+      <div class="card-body">
+        <div class="stars-wrap">
+          <div class="stars-label-row">
+            <span class="stars-label">Avaliação</span>
+            <span class="stars-pts" id="pts-${c.id}">—</span>
+          </div>
+          <div class="stars-row" id="stars-${c.id}">
+            ${[1,2,3,4,5].map(n => `
+              <div class="star-btn" id="star-${c.id}-${n}" onclick="darNota('${c.id}',${n},${c.max})">
+                ${n <= (notas[c.id]||0) ? '★' : '☆'}
+              </div>`).join('')}
+          </div>
+        </div>
+        <textarea class="obs-input" id="obs-${c.id}" placeholder="Observação sobre este critério (opcional)..."></textarea>
+      </div>
+    </div>`).join('');
+
+  // Seção de discordâncias só para Techout
+  const isTO = colab === 'tmanha' || colab === 'ttarde';
+  document.getElementById('disc-section').style.display = isTO ? 'block' : 'none';
+  if (isTO) {
+    document.getElementById('disc-grid').innerHTML = Object.entries(DISC_LABELS).map(([k, label]) => `
+      <div class="disc-item">
+        <span class="di-label">${label}</span>
+        <div class="disc-counter">
+          <button class="disc-btn minus" onclick="ajustarDisc('${k}',-1)">−</button>
+          <span class="disc-val" id="disc-${k}">0</span>
+          <button class="disc-btn plus" onclick="ajustarDisc('${k}',1)">+</button>
+        </div>
+      </div>`).join('');
+  }
+
+  document.getElementById('obs-geral').value = '';
+  document.getElementById('btn-salvar').disabled = true;
+  document.getElementById('form-colab').style.display = 'block';
+  document.getElementById('done-lanc').classList.remove('visible');
+  document.getElementById('done-lanc').style.display = 'none';
+}
+
+function darNota(critId, nota, max) {
+  notas[critId] = notas[critId] === nota ? 0 : nota;
+  const n = notas[critId];
+  // Atualiza estrelas
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`star-${critId}-${i}`);
+    if (el) { el.className = 'star-btn' + (i <= n ? ' on' : ''); el.textContent = i <= n ? '★' : '☆'; }
+  }
+  // Pontos
+  const pts = n > 0 ? Math.round((n/5)*max) : 0;
+  const el = document.getElementById(`pts-${critId}`);
+  if (el) {
+    el.textContent = n > 0 ? `${pts}/${max} pts` : '—';
+    el.style.color = n >= 4 ? 'var(--green)' : n >= 3 ? 'var(--yellow)' : n > 0 ? 'var(--red)' : 'var(--muted)';
+  }
+  atualizarScorePreview();
+}
+
+function atualizarScorePreview() {
+  const crits = CRITERIOS[colabAtual];
+  const avaliados = crits.filter(c => (notas[c.id]||0) > 0).length;
+  const totalMax = crits.reduce((s,c) => s+c.max, 0);
+  const totalPts = crits.reduce((s,c) => s + (notas[c.id] > 0 ? Math.round((notas[c.id]/5)*c.max) : 0), 0);
+  const pct = totalMax > 0 ? Math.round(totalPts/totalMax*100) : 0;
+
+  document.getElementById('prog-txt').textContent = `${avaliados} / ${crits.length}`;
+  document.getElementById('prog-fill').style.width = (avaliados/crits.length*100) + '%';
+  document.getElementById('sp-score').textContent = totalPts;
+  document.getElementById('sp-score').style.color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+  document.getElementById('sp-max').textContent = `/ ${totalMax} pts`;
+  document.getElementById('sp-pct').textContent = avaliados > 0 ? `${pct}%` : '—';
+  document.getElementById('btn-salvar').disabled = avaliados < crits.length;
+}
+
+function ajustarDisc(campo, dir) {
+  discordancias[campo] = Math.max(0, (discordancias[campo]||0) + dir);
+  const el = document.getElementById(`disc-${campo}`);
+  if (el) {
+    el.textContent = discordancias[campo];
+    el.className = 'disc-val' + (discordancias[campo] > 0 ? ' has-disc' : '');
+  }
+}
+
+function salvarAvaliacao() {
+  const crits = CRITERIOS[colabAtual];
+  const totalMax = crits.reduce((s,c) => s+c.max, 0);
+  const totalPts = crits.reduce((s,c) => s + Math.round((notas[c.id]/5)*c.max), 0);
+  const semana = document.getElementById('semana-ref').value || getSemanaStr(new Date());
+
+  const reg = {
+    id: Date.now(),
+    colab: colabAtual,
+    nome: NOMES[colabAtual],
+    unidade: UNIDADES[colabAtual],
+    funcao: FUNCOES[colabAtual],
+    semana,
+    data: new Date().toLocaleDateString('pt-BR'),
+    pontos: totalPts,
+    max: totalMax,
+    pct: Math.round(totalPts/totalMax*100),
+    criterios: crits.map(c => ({
+      id: c.id,
+      label: c.label,
+      nota: notas[c.id] || 0,
+      max: c.max,
+      pts: Math.round(((notas[c.id]||0)/5)*c.max)
+    })),
+    discordancias: { ...discordancias },
+    obs: document.getElementById('obs-geral').value.trim()
+  };
+
+  // Salvar (substituir se já existe para a mesma semana/colab)
+  const todas = STORE.get('avaliacoes') || [];
+  const idx = todas.findIndex(a => a.colab === colabAtual && a.semana === semana);
+  if (idx >= 0) todas[idx] = reg; else todas.push(reg);
+  STORE.set('avaliacoes', todas);
+
+  // Done
+  document.getElementById('form-colab').style.display = 'none';
+  const done = document.getElementById('done-lanc');
+  done.style.display = 'block';
+  done.classList.add('visible');
+  document.getElementById('done-lanc-title').textContent = `${NOMES[colabAtual]} — ${totalPts}/${totalMax} pts`;
+  const pct = Math.round(totalPts/totalMax*100);
+  document.getElementById('done-lanc-sub').textContent = `${pct}% · ${semanaStrToLabel(semana)} · Avaliação salva com sucesso.`;
+}
+
+function proximoColab() {
+  const ordem = ['victor','lorena','janse','tmanha','ttarde'];
+  const idx = ordem.indexOf(colabAtual);
+  const prox = ordem[(idx+1) % ordem.length];
+  document.getElementById('done-lanc').classList.remove('visible');
+  document.getElementById('done-lanc').style.display = 'none';
+  selecionarColab(prox);
+}
+
+function resetLanc() {
+  colabAtual = null;
+  notas = {};
+  document.querySelectorAll('.colab-btn').forEach(b => b.className = 'colab-btn');
+  document.getElementById('form-colab').style.display = 'none';
+  document.getElementById('done-lanc').classList.remove('visible');
+  document.getElementById('done-lanc').style.display = 'none';
+}
+
+// ========== HISTÓRICO ==========
+function renderHistorico() {
+  const todas = STORE.get('avaliacoes') || [];
+  const cont = document.getElementById('hist-content');
+
+  if (todas.length === 0) {
+    cont.innerHTML = `<div class="empty-state"><span class="es-icon">📭</span><p>Nenhuma avaliação registrada ainda.<br>Use a aba Lançamento para começar.</p></div>`;
+    return;
+  }
+
+  // Agrupar por semana
+  const porSemana = {};
+  todas.forEach(a => {
+    if (!porSemana[a.semana]) porSemana[a.semana] = [];
+    porSemana[a.semana].push(a);
+  });
+
+  const semanas = Object.keys(porSemana).sort().reverse();
+  cont.innerHTML = semanas.map(sem => {
+    const avs = porSemana[sem];
+    const mediaGeral = Math.round(avs.reduce((s,a)=>s+a.pct,0)/avs.length);
+    const corMedia = mediaGeral >= 80 ? 'var(--green)' : mediaGeral >= 60 ? 'var(--yellow)' : 'var(--red)';
+
+    return `
+    <div class="hist-card">
+      <div class="hist-header" onclick="toggleHist('hist-${sem.replace('-','_')}')">
+        <div class="hh-left">
+          <h4>${semanaStrToLabel(sem)}</h4>
+          <span>${avs.length} colaborador${avs.length>1?'es':''} avaliado${avs.length>1?'s':''}</span>
+        </div>
+        <div class="hist-score" style="color:${corMedia}">${mediaGeral}%</div>
+      </div>
+      <div class="hist-body" id="hist-${sem.replace('-','_')}">
+        ${avs.map(a => {
+          const cor = a.pct >= 80 ? 'var(--green)' : a.pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+          return `
+          <div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <div>
+                <span style="font-weight:700;font-size:13px;">${a.nome}</span>
+                <span style="font-size:11px;color:var(--muted);margin-left:6px;">${a.unidade}</span>
+              </div>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:${cor}">${a.pontos}/${a.max}</span>
+            </div>
+            ${a.criterios.map(c => `
+              <div class="hist-row">
+                <span class="hr-label">${c.label}</span>
+                <span class="hr-stars">${'★'.repeat(c.nota)}${'☆'.repeat(5-c.nota)}</span>
+                <span class="hr-pts" style="color:${c.nota>=4?'var(--green)':c.nota>=3?'var(--yellow)':'var(--red)'}">${c.pts}pt</span>
+              </div>`).join('')}
+            ${a.obs ? `<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:6px;">"${a.obs}"</div>` : ''}
+          </div>`;
+        }).join('<hr style="border:none;border-top:1px solid var(--border);margin:10px 0">')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleHist(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+// ========== RELATÓRIO ==========
+function selTipoRel(tipo, btn) {
+  tipoRel = tipo;
+  document.getElementById('btn-sem').className = 'rel-tipo-btn' + (tipo === 'semanal' ? ' active-sem' : '');
+  document.getElementById('btn-men').className = 'rel-tipo-btn' + (tipo === 'mensal' ? ' active-men' : '');
+  document.getElementById('sel-semana').style.display = tipo === 'semanal' ? 'flex' : 'none';
+  gerarRelatorio();
+}
+
+function gerarRelatorio() {
+  const todas = STORE.get('avaliacoes') || [];
+  const out = document.getElementById('rel-output');
+
+  const filtradas = tipoRel === 'semanal'
+    ? todas.filter(a => a.semana === semanaRel)
+    : todas.filter(a => {
+        if (!a.semana) return false;
+        const mesAtual = new Date().toISOString().slice(0,7);
+        return a.semana.startsWith(mesAtual.slice(0,4)) &&
+          getMonthFromWeek(a.semana) === new Date().getMonth();
+      });
+
+  if (filtradas.length === 0) {
+    out.innerHTML = `<div class="empty-state"><span class="es-icon">📭</span><p>Nenhuma avaliação encontrada para ${tipoRel === 'semanal' ? semanaStrToLabel(semanaRel) : 'este mês'}.<br>Lance as avaliações na aba Lançamento.</p></div>`;
+    return;
+  }
+
+  const titulo = tipoRel === 'semanal'
+    ? `📋 ${semanaStrToLabel(semanaRel)}`
+    : `📈 ${new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`;
+
+  // Separar por unidade
+  const techin = filtradas.filter(a => a.unidade === 'Techin');
+  const techout = filtradas.filter(a => a.unidade === 'Techout');
+
+  let html = '';
+
+  // Total de discordâncias
+  const totalDisc = filtradas
+    .filter(a => a.discordancias)
+    .reduce((s,a) => s + Object.values(a.discordancias).reduce((x,v)=>x+v,0), 0);
+
+  // RESUMO RÁPIDO
+  const mediaGeral = Math.round(filtradas.reduce((s,a)=>s+a.pct,0)/filtradas.length);
+  const corGeral = mediaGeral >= 80 ? 'var(--green)' : mediaGeral >= 60 ? 'var(--yellow)' : 'var(--red)';
+  html += `
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);">${titulo}</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px;">${filtradas.length} avaliação${filtradas.length>1?'ões':''} · ${totalDisc} discordância${totalDisc!==1?'s':''}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;color:var(--muted);">Média geral</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:${corGeral};line-height:1.1;">${mediaGeral}%</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // TECHIN
+  if (techin.length > 0) {
+    html += `<div class="divider-lbl">🍽 Techin</div>`;
+    techin.forEach(a => html += renderScoreCard(a));
+  }
+
+  // TECHOUT
+  if (techout.length > 0) {
+    html += `<div class="divider-lbl">☕ Techout</div>`;
+    techout.forEach(a => html += renderScoreCard(a));
+
+    // Discordâncias de turno
+    const discTotal = {};
+    techout.forEach(a => {
+      if (a.discordancias) {
+        Object.entries(a.discordancias).forEach(([k,v]) => {
+          discTotal[k] = (discTotal[k]||0) + v;
+        });
+      }
+    });
+    const temDisc = Object.values(discTotal).some(v=>v>0);
+    if (temDisc) {
+      html += `<div class="divider-lbl">🔄 Discordâncias de turno</div>`;
+      Object.entries(discTotal).forEach(([k,v]) => {
+        if (v > 0) html += `
+          <div class="alert-box alert-yellow" style="margin-bottom:8px;">
+            <span class="ai">⚠️</span>
+            <div><strong>${DISC_LABELS[k]}</strong><p>${v} discordância${v>1?'s':''} registrada${v>1?'s':''} no período</p></div>
+          </div>`;
+      });
+    }
+  }
+
+  // BOTÃO WHATSAPP
+  html += `<a class="btn-whatsapp" href="${montarLinkWA(filtradas, titulo, totalDisc)}" target="_blank">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Enviar relatório no WhatsApp
+  </a>`;
+
+  out.innerHTML = html;
+}
+
+function renderScoreCard(a) {
+  const cor = a.pct >= 80 ? 'var(--green)' : a.pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+  const tagClass = a.pct >= 80 ? 'tag-ok' : a.pct >= 60 ? 'tag-warn' : 'tag-crit';
+  const tagLabel = a.pct >= 80 ? 'Bom' : a.pct >= 60 ? 'Atenção' : 'Crítico';
+  const fracos = a.criterios.filter(c => c.nota <= 2);
+  const fortes = a.criterios.filter(c => c.nota >= 4);
+
+  return `
+  <div class="score-big-card">
+    <div class="sbc-top">
+      <div>
+        <div class="sbc-nome">${a.nome} <span class="tag ${tagClass}">${tagLabel}</span></div>
+        <div class="sbc-funcao">${a.funcao}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="sbc-score" style="color:${cor}">${a.pontos}<span class="sbc-max">/${a.max}</span></div>
+      </div>
+    </div>
+    <div class="sbc-bar-track">
+      <div class="sbc-bar-fill" style="width:${a.pct}%;background:${cor}"></div>
+    </div>
+    <div class="sbc-pct">${a.pct}%</div>
+    ${fortes.length > 0 ? `
+    <div class="sbc-pontos-fortes">
+      <div class="spf-title">✅ Pontos fortes</div>
+      <ul>${fortes.map(c=>`<li>${c.label}</li>`).join('')}</ul>
+    </div>` : ''}
+    ${fracos.length > 0 ? `
+    <div class="sbc-pontos-fracos">
+      <div class="spf-title">⚠️ Precisa melhorar</div>
+      <ul>${fracos.map(c=>`<li>${c.label}</li>`).join('')}</ul>
+    </div>` : ''}
+    ${a.obs ? `<div class="sbc-obs">💬 "${a.obs}"</div>` : ''}
+  </div>`;
+}
+
+function montarLinkWA(filtradas, titulo, totalDisc) {
+  let msg = `📊 *RELATÓRIO TECHSET*\n${titulo}\n━━━━━━━━━━━━━━━\n\n`;
+
+  const techin = filtradas.filter(a=>a.unidade==='Techin');
+  const techout = filtradas.filter(a=>a.unidade==='Techout');
+
+  if (techin.length > 0) {
+    msg += `🍽 *TECHIN*\n`;
+    techin.forEach(a => {
+      const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
+      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)\n`;
+      const fracos = a.criterios.filter(c=>c.nota<=2);
+      if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+    });
+    msg += '\n';
+  }
+
+  if (techout.length > 0) {
+    msg += `☕ *TECHOUT*\n`;
+    techout.forEach(a => {
+      const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
+      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)\n`;
+      const fracos = a.criterios.filter(c=>c.nota<=2);
+      if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+    });
+    if (totalDisc > 0) msg += `\n⚠️ ${totalDisc} discordância${totalDisc>1?'s':''} de turno no período\n`;
+    msg += '\n';
+  }
+
+  const media = Math.round(filtradas.reduce((s,a)=>s+a.pct,0)/filtradas.length);
+  msg += `📈 Média geral: *${media}%*\n`;
+  msg += `_Techset · Sistema de Avaliação_`;
+
+  return `https://wa.me/?text=${encodeURIComponent(msg)}`;
+}
+
+function getMonthFromWeek(weekStr) {
+  const [year, week] = weekStr.split('-W').map(Number);
+  const jan1 = new Date(year, 0, 1);
+  const days = (week - 1) * 7;
+  const d = new Date(jan1.getTime() + days * 86400000);
+  return d.getMonth();
+}
+
+</script>
+</body>
+</html>
