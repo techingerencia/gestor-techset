@@ -107,6 +107,7 @@
   .tab-btn.a-lanc { color: var(--techin); border-bottom-color: var(--techin); }
   .tab-btn.a-hist { color: var(--purple); border-bottom-color: var(--purple); }
   .tab-btn.a-rel { color: var(--green); border-bottom-color: var(--green); }
+  .tab-btn.a-equipe { color: #0891b2; border-bottom-color: #0891b2; }
 
   /* MAIN */
   main { max-width: 520px; margin: 0 auto; padding: 20px 16px; }
@@ -255,16 +256,7 @@
     margin-top: 1px;
   }
 
-  .colab-btn.sel-victor { border-color: var(--techin); background: var(--techin-soft); }
-  .colab-btn.sel-victor .cb-unidade,.colab-btn.sel-victor .cb-nome { color: var(--techin); }
-  .colab-btn.sel-lorena { border-color: #10b981; background: #ecfdf5; }
-  .colab-btn.sel-lorena .cb-unidade,.colab-btn.sel-lorena .cb-nome { color: #10b981; }
-  .colab-btn.sel-janse { border-color: var(--yellow); background: var(--yellow-soft); }
-  .colab-btn.sel-janse .cb-unidade,.colab-btn.sel-janse .cb-nome { color: var(--yellow); }
-  .colab-btn.sel-tmanha { border-color: var(--techout); background: var(--techout-soft); }
-  .colab-btn.sel-tmanha .cb-unidade,.colab-btn.sel-tmanha .cb-nome { color: var(--techout); }
-  .colab-btn.sel-ttarde { border-color: var(--purple); background: var(--purple-soft); }
-  .colab-btn.sel-ttarde .cb-unidade,.colab-btn.sel-ttarde .cb-nome { color: var(--purple); }
+  .colab-btn.selecionado { box-shadow: var(--shadow-md); }
 
   /* PROGRESSO */
   .prog-wrap {
@@ -552,6 +544,21 @@
   .tag-ok { background: var(--green-soft); color: var(--green); }
   .tag-warn { background: var(--yellow-soft); color: var(--yellow); }
   .tag-crit { background: var(--red-soft); color: var(--red); }
+  .tag-folga { background: linear-gradient(135deg,#fbbf24,#d97706); color: #fff; }
+
+  .folga-box {
+    background: linear-gradient(135deg,#fffbeb,#fff7e0);
+    border: 1px solid rgba(217,119,6,0.3);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    margin-top: 6px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
 
   .btn-whatsapp {
     width: 100%;
@@ -636,19 +643,190 @@
     outline: none;
   }
   .input-semana input:focus { border-color: var(--techin); background: var(--white); }
+
+  /* NUVEM (loading / erro / migração) */
+  .cloud-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .cloud-overlay-box { text-align: center; max-width: 320px; }
+
+  /* EVOLUÇÃO / ALERTAS */
+  .evol-colab-sel { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .evol-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .evol-pill:hover { border-color: #aaa; }
+  .evol-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .evol-toggle-tabela {
+    display: block;
+    margin: 10px auto 0;
+    background: none;
+    border: none;
+    color: var(--techin);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .evol-tabela { margin-top: 8px; }
+
+  /* EQUIPE */
+  .ff-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .ff-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+  }
+  .ff-input:focus { border-color: var(--techin); background: var(--white); }
+  .ff-crit-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .ff-crit-row input[type="text"] {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    min-width: 0;
+  }
+  .ff-crit-row input[type="number"] {
+    width: 56px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 6px;
+    font-size: 13px;
+    text-align: right;
+    background: var(--white);
+    outline: none;
+  }
+  .ff-crit-remove {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ff-crit-remove:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+  .func-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
 </style>
+
+<!-- Firebase (SDK compat, sem necessidade de bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div id="login-overlay" class="cloud-overlay">
+  <div class="cloud-overlay-box" style="max-width:320px; text-align:left;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <span style="font-size:32px;">🔒</span>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;margin-top:8px;">Entrar no Gestor Techset</div>
+    </div>
+    <div id="login-erro" class="alert-box alert-red" style="display:none;margin-bottom:12px;">
+      <span class="ai">⚠️</span>
+      <div><p style="margin:0;">E-mail ou senha incorretos.</p></div>
+    </div>
+    <input type="email" class="ff-input" id="login-email" placeholder="E-mail" style="margin-bottom:10px;width:100%;box-sizing:border-box;" onkeydown="if(event.key==='Enter')fazerLogin()">
+    <input type="password" class="ff-input" id="login-senha" placeholder="Senha" style="margin-bottom:16px;width:100%;box-sizing:border-box;" onkeydown="if(event.key==='Enter')fazerLogin()">
+    <button class="btn-submit btn-primary" id="btn-login" onclick="fazerLogin()" style="width:100%;">Entrar</button>
+  </div>
+</div>
+
+<!-- CARREGANDO -->
+<div id="loading-overlay" class="cloud-overlay" style="display:none">
+  <div class="cloud-overlay-box">
+    <span style="font-size:32px;">☁️</span>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--muted);margin-top:8px;">Conectando à nuvem…</div>
+  </div>
+</div>
+
+<!-- ERRO DE CONEXÃO -->
+<div id="erro-conexao-overlay" class="cloud-overlay" style="display:none">
+  <div class="cloud-overlay-box">
+    <span style="font-size:32px;">⚠️</span>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;margin:8px 0 6px;">Não foi possível conectar</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Verifique sua internet e tente novamente. Se o problema continuar, confirme se as regras do Firestore foram publicadas.</div>
+    <button class="btn-submit btn-primary" onclick="location.reload()">Tentar novamente</button>
+  </div>
+</div>
+
+<!-- MIGRAÇÃO DE DADOS LOCAIS -->
+<div id="migracao-overlay" class="cloud-overlay" style="display:none">
+  <div class="cloud-overlay-box" style="max-width:420px; text-align:left;">
+    <div class="alert-box alert-blue" style="margin-bottom:16px;">
+      <span class="ai">☁️</span>
+      <div>
+        <strong>Dados encontrados neste navegador</strong>
+        <p id="migracao-resumo">—</p>
+      </div>
+    </div>
+    <button class="btn-submit btn-primary" id="btn-migrar" onclick="migrarParaNuvem()">Migrar para a nuvem</button>
+    <button class="btn-novo" style="margin-top:10px;" onclick="pularMigracao()">Começar do zero (ignorar dados locais)</button>
+  </div>
+</div>
 
 <div class="header">
   <div class="header-top">
     <div class="logo"><span class="t">Tech</span><span class="o">set</span><span class="g"> · Gestor</span></div>
-    <div class="date-pill" id="datePill">—</div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <div class="date-pill" id="datePill">—</div>
+      <div class="date-pill" id="syncStatus" title="Status da sincronização">☁️</div>
+      <button class="date-pill" id="btnSair" onclick="fazerLogout()" title="Sair da conta" style="cursor:pointer;">🚪 Sair</button>
+    </div>
   </div>
   <div class="tabs">
     <button class="tab-btn a-lanc active" onclick="showTab('lanc',this)">✏️ Lançamento</button>
     <button class="tab-btn" onclick="showTab('hist',this)">📁 Histórico</button>
     <button class="tab-btn" onclick="showTab('rel',this)">📊 Relatório</button>
+    <button class="tab-btn" onclick="showTab('equipe',this)">👥 Equipe</button>
   </div>
 </div>
 
@@ -661,7 +839,7 @@
       <span class="ai">👔</span>
       <div>
         <strong>Avaliação semanal</strong>
-        <p>Avalie cada colaborador com base no que observou e nos checklists recebidos pelo WhatsApp. Notas de 1 a 5 estrelas por critério.</p>
+        <p>Avalie cada colaborador com base no que observou e nos checklists recebidos pelo WhatsApp. Notas de 1 a 5 estrelas por critério. 🏆 Quem ultrapassar 90% de aproveitamento tem direito a 1 folga no mês seguinte.</p>
       </div>
     </div>
 
@@ -673,36 +851,13 @@
 
     <!-- SELETOR DE COLABORADOR -->
     <div class="sec-label">Selecionar colaborador</div>
-    <div class="colab-grid">
-      <div class="colab-btn" id="cb-victor" onclick="selecionarColab('victor')">
-        <span class="cb-unidade">Techin</span>
-        <span class="cb-nome">Victor</span>
-        <span class="cb-funcao">Liderança operacional</span>
-      </div>
-      <div class="colab-btn" id="cb-lorena" onclick="selecionarColab('lorena')">
-        <span class="cb-unidade">Techin</span>
-        <span class="cb-nome">Lorena</span>
-        <span class="cb-funcao">Produção e técnica</span>
-      </div>
-      <div class="colab-btn" id="cb-janse" onclick="selecionarColab('janse')">
-        <span class="cb-unidade">Techin</span>
-        <span class="cb-nome">Janse</span>
-        <span class="cb-funcao">Frente de loja</span>
-      </div>
-      <div class="colab-btn" id="cb-tmanha" onclick="selecionarColab('tmanha')">
-        <span class="cb-unidade">Techout</span>
-        <span class="cb-nome">Turno Manhã</span>
-        <span class="cb-funcao">07h – 16h</span>
-      </div>
-      <div class="colab-btn" id="cb-ttarde" onclick="selecionarColab('ttarde')">
-        <span class="cb-unidade">Techout</span>
-        <span class="cb-nome">Turno Tarde</span>
-        <span class="cb-funcao">13h – 22h</span>
-      </div>
-    </div>
+    <div class="colab-grid" id="colab-grid"></div>
 
     <!-- FORMULÁRIO DINÂMICO -->
     <div id="form-colab" style="display:none">
+
+      <div class="alert-box alert-blue" id="alerta-edicao-lanc" style="display:none"></div>
+      <div class="alert-box alert-red" id="alerta-critico-lanc" style="display:none"></div>
 
       <div class="prog-wrap">
         <div class="prog-top"><span>Critérios avaliados</span><strong id="prog-txt">0 / 0</strong></div>
@@ -727,7 +882,8 @@
         <div class="sec-label">🔄 Discordâncias de turno recebidas</div>
         <div class="card">
           <div class="card-body">
-            <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Com base nos checklists recebidos pelo WhatsApp, quantas discordâncias foram registradas nesta semana?</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Pré-preenchido automaticamente com base no Checklist Techout desta semana. Ajuste manualmente se necessário.</div>
+            <div id="disc-checklist-hint" style="font-size:11px;color:var(--techout);font-weight:600;margin-bottom:10px;"></div>
             <div class="disc-grid" id="disc-grid"></div>
           </div>
         </div>
@@ -760,6 +916,23 @@
 
   <!-- ========== HISTÓRICO ========== -->
   <div class="panel" id="panel-hist">
+
+    <div id="alertas-criticos"></div>
+
+    <div class="card" id="evolucao-card" style="margin-bottom:14px;">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="ch-title">📈 Evolução de desempenho</div>
+          <div class="ch-sub" id="evol-sub">—</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="evol-colab-sel" id="evol-colab-sel"></div>
+        <div id="evol-chart-wrap"></div>
+      </div>
+    </div>
+
+    <div class="sec-label">Avaliações por semana</div>
     <div id="hist-content"></div>
   </div>
 
@@ -784,6 +957,67 @@
 
   </div>
 
+  <!-- ========== EQUIPE ========== -->
+  <div class="panel" id="panel-equipe">
+
+    <div class="alert-box alert-blue">
+      <span class="ai">👥</span>
+      <div>
+        <strong>Gerenciar equipe</strong>
+        <p>Adicione novos funcionários, edite nome, unidade, função e os critérios de avaliação de cada um. A soma dos pontos de cada funcionário deve ser sempre 100.</p>
+      </div>
+    </div>
+
+    <div id="lista-funcionarios-wrap">
+      <button class="btn-submit btn-primary" style="margin-bottom:16px;" onclick="abrirFormFuncionario()">+ Novo funcionário</button>
+      <div id="lista-funcionarios"></div>
+    </div>
+
+    <!-- FORMULÁRIO ADICIONAR/EDITAR -->
+    <div id="form-funcionario" style="display:none">
+      <input type="hidden" id="ff-id-editando">
+      <div class="sec-label" id="ff-titulo">Novo funcionário</div>
+
+      <div class="card">
+        <div class="card-body">
+          <label class="ff-label">Nome</label>
+          <input type="text" class="ff-input" id="ff-nome" placeholder="Ex: Marina" oninput="atualizarTotalFuncionario()">
+
+          <label class="ff-label" style="margin-top:12px;">Unidade</label>
+          <select class="ff-input" id="ff-unidade">
+            <option value="Techin">Techin</option>
+            <option value="Techout">Techout</option>
+          </select>
+
+          <label class="ff-label" style="margin-top:12px;">Função</label>
+          <input type="text" class="ff-input" id="ff-funcao" placeholder="Ex: Atendimento ao cliente">
+
+          <label class="ff-label" style="margin-top:12px;">Cor de identificação</label>
+          <input type="color" id="ff-cor" value="#4f8ef7" style="width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;">
+        </div>
+      </div>
+
+      <div class="sec-label">Critérios de avaliação</div>
+      <div id="ff-criterios-list"></div>
+      <button class="btn-novo" style="margin-bottom:14px;" onclick="adicionarLinhaCriterio()">+ Adicionar critério</button>
+
+      <div class="score-preview">
+        <div>
+          <div class="sp-label">Total de pontos</div>
+          <div class="sp-pct" id="ff-total-hint">Deve somar 100</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sp-score" id="ff-total-pts" style="color:var(--muted)">0</div>
+          <div class="sp-max">/ 100 pts</div>
+        </div>
+      </div>
+
+      <button class="btn-submit btn-primary" id="ff-btn-salvar" onclick="salvarFuncionario()" disabled>Salvar funcionário</button>
+      <button class="btn-novo" style="margin-top:10px;" onclick="fecharFormFuncionario()">Cancelar</button>
+    </div>
+
+  </div>
+
 </main>
 
 <script>
@@ -795,50 +1029,79 @@ const STORE = {
   push: (k,v) => { const a = STORE.get(k) || []; a.push(v); STORE.set(k,a); }
 };
 
-// ========== CRITÉRIOS ==========
-const CRITERIOS = {
-  victor: [
-    { id:'lista_prod',  label:'Lista de produção entregue no prazo',    max:20 },
-    { id:'lista_comp',  label:'Lista de compras sem emergências',        max:20 },
-    { id:'distrib',     label:'Distribuição de funções na produção',     max:20 },
-    { id:'qualidade',   label:'Padrão de qualidade — rejeição ≤ 1%',    max:25 },
-    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
-  ],
-  lorena: [
-    { id:'receitas',    label:'Reprodução de receitas — fidelidade à ficha', max:25 },
-    { id:'porciona',    label:'Porcionamento dentro da gramatura',            max:25 },
-    { id:'org_espaco',  label:'Organização do espaço e mise-en-place',        max:20 },
-    { id:'acai',        label:'Produção de açaí — qualidade e volume',        max:15 },
-    { id:'assiduid',    label:'Assiduidade e pontualidade',                   max:15 },
-  ],
-  janse: [
-    { id:'atendimento', label:'Atendimento ao cliente — satisfação',     max:25 },
-    { id:'estufa',      label:'Organização da estufa e expositores',     max:20 },
-    { id:'caixa',       label:'Caixa — fechamento sem divergências',     max:20 },
-    { id:'bebidas',     label:'Produção de bebidas e cafés',             max:20 },
-    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
-  ],
-  tmanha: [
-    { id:'org_limp',    label:'Organização e limpeza do espaço',         max:20 },
-    { id:'reabast',     label:'Reabastecimento de geladeiras e salgados',max:20 },
-    { id:'insumos',     label:'Produção de insumos para doces',          max:20 },
-    { id:'desperd',     label:'Controle de desperdício',                 max:15 },
-    { id:'passagem',    label:'Passagem de turno — registro completo',   max:10 },
-    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
-  ],
-  ttarde: [
-    { id:'org_limp',    label:'Organização e limpeza do espaço',         max:20 },
-    { id:'reabast',     label:'Reabastecimento de geladeiras e salgados',max:20 },
-    { id:'insumos',     label:'Produção de insumos para doces',          max:20 },
-    { id:'desperd',     label:'Controle de desperdício e fechamento',    max:15 },
-    { id:'leitura',     label:'Leitura e execução da passagem de turno', max:10 },
-    { id:'assiduid',    label:'Assiduidade e pontualidade',              max:15 },
-  ]
-};
+// ========== FUNCIONÁRIOS (equipe configurável) ==========
+function seedFuncionariosPadrao() {
+  return [
+    { id:'victor', nome:'Victor', unidade:'Techin', funcao:'Liderança operacional', cor:'#4f8ef7', ativo:true, criterios: [
+      { id:'lista_prod',  label:'Lista de produção entregue no prazo',       max:10 },
+      { id:'lista_comp',  label:'Lista de compras sem emergências',          max:20 },
+      { id:'distrib',     label:'Distribuição de funções na produção',       max:15 },
+      { id:'qualidade',   label:'Padrão de qualidade — rejeição ≤ 1%',      max:20 },
+      { id:'relac',       label:'Bom relacionamento, simpatia e educação',   max:10 },
+      { id:'assiduid',    label:'Assiduidade e pontualidade',                max:25 },
+    ]},
+    { id:'lorena', nome:'Lorena', unidade:'Techin', funcao:'Produção e técnica', cor:'#10b981', ativo:true, criterios: [
+      { id:'receitas',    label:'Reprodução de receitas — fidelidade à ficha', max:20 },
+      { id:'porciona',    label:'Porcionamento dentro da gramatura',            max:20 },
+      { id:'org_espaco',  label:'Organização do espaço e mise-en-place',        max:15 },
+      { id:'acai',        label:'Produção de açaí — qualidade e volume',        max:10 },
+      { id:'relac',       label:'Bom relacionamento, simpatia e educação',      max:10 },
+      { id:'assiduid',    label:'Assiduidade e pontualidade',                   max:25 },
+    ]},
+    { id:'janse', nome:'Janse', unidade:'Techin', funcao:'Frente de loja', cor:'#d97706', ativo:true, criterios: [
+      { id:'atendimento', label:'Atendimento ao cliente — satisfação',     max:20 },
+      { id:'caixa',       label:'Caixa — fechamento sem divergências',     max:20 },
+      { id:'assiduid',    label:'Assiduidade e pontualidade',              max:20 },
+      { id:'estufa',      label:'Organização da estufa e expositores',     max:10 },
+      { id:'bebidas',     label:'Produção de bebidas e cafés',             max:10 },
+      { id:'geladeira',   label:'Reposição de geladeira',                  max:10 },
+      { id:'relac',       label:'Bom relacionamento, simpatia e educação', max:10 },
+    ]},
+    { id:'tmanha', nome:'Turno Manhã', unidade:'Techout', funcao:'07h – 16h', cor:'#e8531e', ativo:true, criterios: [
+      { id:'org_limp',    label:'Organização e limpeza do espaço',          max:15 },
+      { id:'reabast',     label:'Reabastecimento de geladeiras e salgados', max:15 },
+      { id:'insumos',     label:'Produção de insumos para doces',           max:15 },
+      { id:'desperd',     label:'Controle de desperdício e fechamento',     max:10 },
+      { id:'leitura',     label:'Leitura e execução da passagem de turno',  max:10 },
+      { id:'relac',       label:'Bom relacionamento, simpatia e educação',  max:15 },
+      { id:'assiduid',    label:'Assiduidade e pontualidade',               max:20 },
+    ]},
+    { id:'ttarde', nome:'Turno Tarde', unidade:'Techout', funcao:'13h – 22h', cor:'#7c3aed', ativo:true, criterios: [
+      { id:'org_limp',    label:'Organização e limpeza do espaço',          max:15 },
+      { id:'reabast',     label:'Reabastecimento de geladeiras e salgados', max:15 },
+      { id:'insumos',     label:'Produção de insumos para doces',           max:15 },
+      { id:'desperd',     label:'Controle de desperdício e fechamento',     max:10 },
+      { id:'leitura',     label:'Leitura e execução da passagem de turno',  max:10 },
+      { id:'relac',       label:'Bom relacionamento, simpatia e educação',  max:15 },
+      { id:'assiduid',    label:'Assiduidade e pontualidade',               max:20 },
+    ]},
+  ];
+}
 
-const NOMES = { victor:'Victor', lorena:'Lorena', janse:'Janse', tmanha:'Turno Manhã', ttarde:'Turno Tarde' };
-const UNIDADES = { victor:'Techin', lorena:'Techin', janse:'Techin', tmanha:'Techout', ttarde:'Techout' };
-const FUNCOES = { victor:'Liderança operacional', lorena:'Produção e técnica', janse:'Frente de loja', tmanha:'07h – 16h', ttarde:'13h – 22h' };
+function getFuncionario(id) {
+  return FUNCIONARIOS.find(f => f.id === id) || null;
+}
+
+function funcionariosAtivos() {
+  return FUNCIONARIOS.filter(f => f.ativo !== false);
+}
+
+function slugify(str) {
+  return String(str).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^a-z0-9]+/g,'_')
+    .replace(/^_+|_+$/g,'') || 'item';
+}
+
+function hexToRgba(hex, alpha) {
+  let h = String(hex).replace('#','');
+  if (h.length === 3) h = h.split('').map(c=>c+c).join('');
+  const r = parseInt(h.substring(0,2),16) || 0;
+  const g = parseInt(h.substring(2,4),16) || 0;
+  const b = parseInt(h.substring(4,6),16) || 0;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 const DISC_LABELS = {
   limpeza: 'Limpeza — chão, bancadas, estufa e pia',
   equip:   'Equipamentos — misteira, microondas, forno',
@@ -847,20 +1110,198 @@ const DISC_LABELS = {
   embal:   'Salgados anteriores embalados'
 };
 
-const CORES_COLAB = {
-  victor:  { main:'var(--techin)',  sel:'sel-victor' },
-  lorena:  { main:'#10b981',        sel:'sel-lorena' },
-  janse:   { main:'var(--yellow)',  sel:'sel-janse' },
-  tmanha:  { main:'var(--techout)', sel:'sel-tmanha' },
-  ttarde:  { main:'var(--purple)',  sel:'sel-ttarde' },
+// Regra de alerta de desempenho crítico recorrente
+const LIMITE_CRITICO = 60;
+const MIN_SEMANAS_CRITICO = 2;
+
+// ========== FIREBASE / FIRESTORE ==========
+const firebaseConfig = {
+  apiKey: "AIzaSyDPtVbOcSx5qdok4CwGfaL0m4SQYUAI7NU",
+  authDomain: "techset-gestor.firebaseapp.com",
+  projectId: "techset-gestor",
+  storageBucket: "techset-gestor.firebasestorage.app",
+  messagingSenderId: "548263560140",
+  appId: "1:548263560140:web:668f6bf9cf07ba9ae7d369"
 };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+auth.onAuthStateChanged(user => {
+  const loginOverlay = document.getElementById('login-overlay');
+  const loadingOverlay = document.getElementById('loading-overlay');
+  if (user) {
+    loginOverlay.style.display = 'none';
+    loadingOverlay.style.display = 'flex';
+    inicializarDados();
+  } else {
+    loginOverlay.style.display = 'flex';
+    loadingOverlay.style.display = 'none';
+    document.getElementById('erro-conexao-overlay').style.display = 'none';
+    document.getElementById('migracao-overlay').style.display = 'none';
+  }
+});
+
+async function fazerLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-senha').value;
+  const erro = document.getElementById('login-erro');
+  const btn = document.getElementById('btn-login');
+  erro.style.display = 'none';
+  if (!email || !senha) return;
+  btn.disabled = true;
+  btn.textContent = 'Entrando…';
+  try {
+    await auth.signInWithEmailAndPassword(email, senha);
+    // onAuthStateChanged cuida do resto
+  } catch (err) {
+    console.error('Erro de login:', err);
+    erro.style.display = 'flex';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+}
+
+function fazerLogout() {
+  auth.signOut();
+}
+
+async function inicializarDados() {
+  try {
+    const [snapFunc, snapAval] = await Promise.all([
+      db.collection('funcionarios').get(),
+      db.collection('avaliacoes').get()
+    ]);
+
+    if (snapFunc.empty) {
+      const locaisFunc = STORE.get('funcionarios');
+      const locaisAval = STORE.get('avaliacoes');
+      const temDadosLocais = (locaisFunc && locaisFunc.length > 0) || (locaisAval && locaisAval.length > 0);
+      if (temDadosLocais) {
+        mostrarMigracao(locaisFunc || [], locaisAval || []);
+        return; // migrarParaNuvem() ou pularMigracao() chamam ligarListeners() depois
+      }
+      await seedFirestorePadrao();
+    }
+
+    ligarListeners();
+  } catch (err) {
+    console.error('Erro ao conectar ao Firestore:', err);
+    document.getElementById('loading-overlay').style.display = 'none';
+    document.getElementById('erro-conexao-overlay').style.display = 'flex';
+  }
+}
+
+async function seedFirestorePadrao() {
+  const batch = db.batch();
+  seedFuncionariosPadrao().forEach(f => batch.set(db.collection('funcionarios').doc(f.id), f));
+  await batch.commit();
+}
+
+function mostrarMigracao(locaisFunc, locaisAval) {
+  document.getElementById('loading-overlay').style.display = 'none';
+  const overlay = document.getElementById('migracao-overlay');
+  const nFunc = locaisFunc.length;
+  const nAval = locaisAval.length;
+  document.getElementById('migracao-resumo').textContent =
+    `Encontramos ${nFunc} funcionário${nFunc!==1?'s':''} cadastrado${nFunc!==1?'s':''} e ${nAval} avaliação${nAval!==1?'ões':''} salva${nAval!==1?'s':''} neste computador. Deseja enviá-los para o banco de dados na nuvem agora?`;
+  overlay.dataset.temFunc = String(locaisFunc.length > 0);
+  overlay._locaisFunc = locaisFunc;
+  overlay._locaisAval = locaisAval;
+  overlay.style.display = 'flex';
+}
+
+async function migrarParaNuvem() {
+  const overlay = document.getElementById('migracao-overlay');
+  const btn = document.getElementById('btn-migrar');
+  btn.disabled = true;
+  btn.textContent = 'Migrando…';
+  const locaisFunc = (overlay._locaisFunc && overlay._locaisFunc.length) ? overlay._locaisFunc : seedFuncionariosPadrao();
+  const locaisAval = overlay._locaisAval || [];
+  try {
+    const batch = db.batch();
+    locaisFunc.forEach(f => batch.set(db.collection('funcionarios').doc(f.id), f));
+    locaisAval.forEach(a => batch.set(db.collection('avaliacoes').doc(`${a.colab}_${a.semana}`), a));
+    await batch.commit();
+    overlay.style.display = 'none';
+    ligarListeners();
+  } catch (err) {
+    console.error('Erro na migração:', err);
+    btn.disabled = false;
+    btn.textContent = 'Tentar migrar novamente';
+  }
+}
+
+async function pularMigracao() {
+  document.getElementById('migracao-overlay').style.display = 'none';
+  document.getElementById('loading-overlay').style.display = 'flex';
+  await seedFirestorePadrao();
+  ligarListeners();
+}
+
+function ligarListeners() {
+  db.collection('funcionarios').onSnapshot(snap => {
+    FUNCIONARIOS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!colabEvolucao && FUNCIONARIOS.length > 0) colabEvolucao = FUNCIONARIOS[0].id;
+    onDadosAtualizados();
+  }, err => {
+    console.error('Erro ao sincronizar funcionários:', err);
+  });
+
+  db.collection('avaliacoes').onSnapshot({ includeMetadataChanges: true }, snap => {
+    AVALIACOES = snap.docs.map(d => d.data());
+    const status = document.getElementById('syncStatus');
+    if (status) {
+      if (snap.metadata.fromCache) { status.textContent = '⏳'; status.title = 'Sincronizando…'; }
+      else { status.textContent = '☁️'; status.title = 'Sincronizado com a nuvem'; }
+    }
+    onDadosAtualizados();
+  }, err => {
+    console.error('Erro ao sincronizar avaliações:', err);
+  });
+
+  db.collection('checklists').onSnapshot(snap => {
+    CHECKLISTS = snap.docs.map(d => d.data());
+  }, err => {
+    console.error('Erro ao sincronizar checklists:', err);
+  });
+}
+
+// Soma as discordâncias (por categoria) registradas nos checklists do Techout
+// para um colaborador em uma semana específica — usado para pré-preencher a
+// avaliação semanal automaticamente.
+function getDiscordanciasChecklist(colab, semana) {
+  const registros = CHECKLISTS.filter(c => c.colab === colab && c.semana === semana);
+  const total = { limpeza: 0, equip: 0, gelad: 0, salgado: 0, embal: 0 };
+  registros.forEach(r => {
+    if (!r.discordancias) return;
+    Object.keys(total).forEach(k => { total[k] += r.discordancias[k] || 0; });
+  });
+  return { total, registros: registros.length };
+}
+
+function onDadosAtualizados() {
+  document.getElementById('loading-overlay').style.display = 'none';
+  renderColabGrid();
+  const activePanel = document.querySelector('.panel.active');
+  if (!activePanel) return;
+  if (activePanel.id === 'panel-hist') atualizarPainelHistorico();
+  if (activePanel.id === 'panel-rel') gerarRelatorio();
+  if (activePanel.id === 'panel-equipe') renderListaFuncionarios();
+}
 
 // ========== STATE ==========
+let FUNCIONARIOS = [];
+let AVALIACOES = [];
+let CHECKLISTS = [];
 let colabAtual = null;
 let notas = {};
+let obsCriterios = {};
 let discordancias = {};
 let tipoRel = 'semanal';
 let semanaRel = getSemanaStr(new Date());
+let colabEvolucao = null;
 
 // ========== INIT ==========
 const hoje = new Date();
@@ -868,17 +1309,25 @@ document.getElementById('datePill').textContent = hoje.toLocaleDateString('pt-BR
 const semInput = document.getElementById('semana-ref');
 semInput.value = getSemanaStr(hoje);
 semInput.max = getSemanaStr(hoje);
+semInput.addEventListener('change', () => { if (colabAtual) selecionarColab(colabAtual); });
 atualizarSemanaDisplay();
+renderColabGrid();
+// inicializarDados() é chamado pelo listener de autenticação (onAuthStateChanged) assim que o login for confirmado.
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // ========== TABS ==========
 function showTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active','a-lanc','a-hist','a-rel'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active','a-lanc','a-hist','a-rel','a-equipe'));
   document.getElementById('panel-' + id).classList.add('active');
-  const classMap = { lanc:'a-lanc', hist:'a-hist', rel:'a-rel' };
+  const classMap = { lanc:'a-lanc', hist:'a-hist', rel:'a-rel', equipe:'a-equipe' };
   btn.classList.add('active', classMap[id]);
-  if (id === 'hist') renderHistorico();
+  if (id === 'hist') atualizarPainelHistorico();
   if (id === 'rel') gerarRelatorio();
+  if (id === 'equipe') renderListaFuncionarios();
 }
 
 // ========== SEMANA ==========
@@ -913,29 +1362,105 @@ function atualizarSemanaDisplay() {
 }
 
 // ========== COLABORADOR ==========
-function selecionarColab(colab) {
-  colabAtual = colab;
-  notas = {};
-  discordancias = { limpeza:0, equip:0, gelad:0, salgado:0, embal:0 };
+function renderColabGrid() {
+  const grid = document.getElementById('colab-grid');
+  if (!grid) return;
+  const ativos = funcionariosAtivos();
+  if (ativos.length === 0) {
+    grid.innerHTML = `<div class="evol-empty" style="grid-column:1/-1;">Nenhum funcionário ativo. Cadastre alguém na aba 👥 Equipe.</div>`;
+    return;
+  }
+  grid.innerHTML = ativos.map(f => `
+    <div class="colab-btn" id="cb-${f.id}" onclick="selecionarColab('${f.id}')">
+      <span class="cb-unidade">${escapeHtml(f.unidade)}</span>
+      <span class="cb-nome">${escapeHtml(f.nome)}</span>
+      <span class="cb-funcao">${escapeHtml(f.funcao)}</span>
+    </div>`).join('');
+  if (colabAtual) aplicarDestaqueColabBtn(colabAtual);
+}
 
+function buscarAvaliacaoExistente(colab, semana) {
+  return AVALIACOES.find(a => a.colab === colab && a.semana === semana) || null;
+}
+
+function aplicarDestaqueColabBtn(colab) {
   document.querySelectorAll('.colab-btn').forEach(b => {
     const id = b.id.replace('cb-','');
-    b.className = 'colab-btn' + (id === colab ? ' sel-'+colab : '');
+    const f = getFuncionario(id);
+    if (colab && id === colab && f) {
+      b.classList.add('selecionado');
+      b.style.borderColor = f.cor;
+      b.style.background = hexToRgba(f.cor, 0.08);
+      const un = b.querySelector('.cb-unidade'), no = b.querySelector('.cb-nome');
+      if (un) un.style.color = f.cor;
+      if (no) no.style.color = f.cor;
+    } else {
+      b.classList.remove('selecionado');
+      b.removeAttribute('style');
+      b.querySelectorAll('.cb-unidade,.cb-nome').forEach(el => el.removeAttribute('style'));
+    }
   });
+}
 
-  const crits = CRITERIOS[colab];
-  const totalMax = crits.reduce((s,c) => s+c.max, 0);
+function selecionarColab(colab) {
+  const func = getFuncionario(colab);
+  if (!func) return;
+  colabAtual = colab;
+  notas = {};
+  obsCriterios = {};
+  discordancias = { limpeza:0, equip:0, gelad:0, salgado:0, embal:0 };
 
-  document.getElementById('prog-txt').textContent = `0 / ${crits.length}`;
-  document.getElementById('prog-fill').style.width = '0%';
-  document.getElementById('prog-fill').style.background = CORES_COLAB[colab].main;
-  document.getElementById('sp-score').textContent = '0';
-  document.getElementById('sp-score').style.color = 'var(--muted)';
-  document.getElementById('sp-max').textContent = `/ ${totalMax} pts`;
-  document.getElementById('sp-pct').textContent = '—';
+  const semanaAtual = document.getElementById('semana-ref').value || getSemanaStr(new Date());
+  const existente = buscarAvaliacaoExistente(colab, semanaAtual);
 
-  // Renderiza critérios
-  document.getElementById('criterios-wrap').innerHTML = crits.map(c => `
+  // Discordâncias do Techout: agrega o que o Checklist Techout já registrou nesta semana
+  let checklistInfo = { total: { limpeza:0, equip:0, gelad:0, salgado:0, embal:0 }, registros: 0 };
+  if (func.unidade === 'Techout') {
+    checklistInfo = getDiscordanciasChecklist(colab, semanaAtual);
+  }
+
+  if (existente) {
+    existente.criterios.forEach(c => {
+      notas[c.id] = c.nota;
+      if (c.obs) obsCriterios[c.id] = c.obs;
+    });
+    if (existente.discordancias) discordancias = { ...discordancias, ...existente.discordancias };
+  } else if (func.unidade === 'Techout') {
+    discordancias = { ...discordancias, ...checklistInfo.total };
+  }
+
+  aplicarDestaqueColabBtn(colab);
+
+  const crits = func.criterios;
+
+  document.getElementById('prog-fill').style.background = func.cor;
+
+  // Banner de edição (já existe avaliação para esta semana)
+  const bannerEdicao = document.getElementById('alerta-edicao-lanc');
+  if (existente) {
+    bannerEdicao.style.display = 'flex';
+    bannerEdicao.innerHTML = `<span class="ai">✏️</span><div><strong>Editando avaliação existente</strong><p>Já existe uma avaliação de ${escapeHtml(func.nome)} para ${semanaStrToLabel(semanaAtual)}. Suas alterações vão substituir os dados salvos.</p></div>`;
+  } else {
+    bannerEdicao.style.display = 'none';
+  }
+
+  // Alerta de desempenho crítico recorrente
+  const bannerCritico = document.getElementById('alerta-critico-lanc');
+  const alerta = getAlertasCriticos().find(a => a.colab === colab);
+  if (alerta) {
+    bannerCritico.style.display = 'flex';
+    bannerCritico.innerHTML = `<span class="ai">🚨</span><div><strong>Desempenho crítico recorrente</strong><p>${escapeHtml(func.nome)} está abaixo de ${LIMITE_CRITICO}% há ${alerta.semanas.length} semanas seguidas. Considere uma conversa de feedback formal.</p></div>`;
+  } else {
+    bannerCritico.style.display = 'none';
+  }
+
+  // Renderiza critérios (pré-preenchendo notas/obs se já houver avaliação salva)
+  document.getElementById('criterios-wrap').innerHTML = crits.map(c => {
+    const n = notas[c.id] || 0;
+    const pts = n > 0 ? Math.round((n/5)*c.max) : 0;
+    const ptsColor = n >= 4 ? 'var(--green)' : n >= 3 ? 'var(--yellow)' : n > 0 ? 'var(--red)' : 'var(--muted)';
+    const obsVal = obsCriterios[c.id] ? escapeHtml(obsCriterios[c.id]) : '';
+    return `
     <div class="card" id="card-${c.id}">
       <div class="card-header">
         <div style="flex:1">
@@ -947,39 +1472,49 @@ function selecionarColab(colab) {
         <div class="stars-wrap">
           <div class="stars-label-row">
             <span class="stars-label">Avaliação</span>
-            <span class="stars-pts" id="pts-${c.id}">—</span>
+            <span class="stars-pts" id="pts-${c.id}" style="color:${ptsColor}">${n > 0 ? `${pts}/${c.max} pts` : '—'}</span>
           </div>
           <div class="stars-row" id="stars-${c.id}">
-            ${[1,2,3,4,5].map(n => `
-              <div class="star-btn" id="star-${c.id}-${n}" onclick="darNota('${c.id}',${n},${c.max})">
-                ${n <= (notas[c.id]||0) ? '★' : '☆'}
+            ${[1,2,3,4,5].map(i => `
+              <div class="star-btn${i <= n ? ' on' : ''}" id="star-${c.id}-${i}" onclick="darNota('${c.id}',${i},${c.max})">
+                ${i <= n ? '★' : '☆'}
               </div>`).join('')}
           </div>
         </div>
-        <textarea class="obs-input" id="obs-${c.id}" placeholder="Observação sobre este critério (opcional)..."></textarea>
+        <textarea class="obs-input" id="obs-${c.id}" placeholder="Observação sobre este critério (opcional)...">${obsVal}</textarea>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   // Seção de discordâncias só para Techout
-  const isTO = colab === 'tmanha' || colab === 'ttarde';
+  const isTO = func.unidade === 'Techout';
   document.getElementById('disc-section').style.display = isTO ? 'block' : 'none';
   if (isTO) {
+    const hintEl = document.getElementById('disc-checklist-hint');
+    if (checklistInfo.registros > 0) {
+      hintEl.textContent = `🔗 ${checklistInfo.registros} conferência${checklistInfo.registros>1?'s':''} de checklist encontrada${checklistInfo.registros>1?'s':''} nesta semana` +
+        (existente ? '.' : ' — discordâncias abaixo já vêm pré-preenchidas.');
+    } else {
+      hintEl.textContent = 'Nenhuma conferência de checklist encontrada para esta semana ainda.';
+    }
     document.getElementById('disc-grid').innerHTML = Object.entries(DISC_LABELS).map(([k, label]) => `
       <div class="disc-item">
         <span class="di-label">${label}</span>
         <div class="disc-counter">
           <button class="disc-btn minus" onclick="ajustarDisc('${k}',-1)">−</button>
-          <span class="disc-val" id="disc-${k}">0</span>
+          <span class="disc-val${discordancias[k]>0?' has-disc':''}" id="disc-${k}">${discordancias[k]||0}</span>
           <button class="disc-btn plus" onclick="ajustarDisc('${k}',1)">+</button>
         </div>
       </div>`).join('');
   }
 
-  document.getElementById('obs-geral').value = '';
-  document.getElementById('btn-salvar').disabled = true;
+  document.getElementById('obs-geral').value = existente ? (existente.obs || '') : '';
+  document.getElementById('btn-salvar').textContent = existente ? 'Atualizar avaliação' : 'Salvar avaliação';
   document.getElementById('form-colab').style.display = 'block';
   document.getElementById('done-lanc').classList.remove('visible');
   document.getElementById('done-lanc').style.display = 'none';
+
+  atualizarScorePreview();
 }
 
 function darNota(critId, nota, max) {
@@ -1001,7 +1536,7 @@ function darNota(critId, nota, max) {
 }
 
 function atualizarScorePreview() {
-  const crits = CRITERIOS[colabAtual];
+  const crits = getFuncionario(colabAtual).criterios;
   const avaliados = crits.filter(c => (notas[c.id]||0) > 0).length;
   const totalMax = crits.reduce((s,c) => s+c.max, 0);
   const totalPts = crits.reduce((s,c) => s + (notas[c.id] > 0 ? Math.round((notas[c.id]/5)*c.max) : 0), 0);
@@ -1025,18 +1560,20 @@ function ajustarDisc(campo, dir) {
   }
 }
 
-function salvarAvaliacao() {
-  const crits = CRITERIOS[colabAtual];
+async function salvarAvaliacao() {
+  const func = getFuncionario(colabAtual);
+  const crits = func.criterios;
   const totalMax = crits.reduce((s,c) => s+c.max, 0);
   const totalPts = crits.reduce((s,c) => s + Math.round((notas[c.id]/5)*c.max), 0);
   const semana = document.getElementById('semana-ref').value || getSemanaStr(new Date());
+  const jaExistia = !!buscarAvaliacaoExistente(colabAtual, semana);
 
   const reg = {
-    id: Date.now(),
+    id: `${colabAtual}_${semana}`,
     colab: colabAtual,
-    nome: NOMES[colabAtual],
-    unidade: UNIDADES[colabAtual],
-    funcao: FUNCOES[colabAtual],
+    nome: func.nome,
+    unidade: func.unidade,
+    funcao: func.funcao,
     semana,
     data: new Date().toLocaleDateString('pt-BR'),
     pontos: totalPts,
@@ -1047,30 +1584,46 @@ function salvarAvaliacao() {
       label: c.label,
       nota: notas[c.id] || 0,
       max: c.max,
-      pts: Math.round(((notas[c.id]||0)/5)*c.max)
+      pts: Math.round(((notas[c.id]||0)/5)*c.max),
+      obs: (document.getElementById('obs-'+c.id)?.value || '').trim()
     })),
     discordancias: { ...discordancias },
     obs: document.getElementById('obs-geral').value.trim()
   };
 
-  // Salvar (substituir se já existe para a mesma semana/colab)
-  const todas = STORE.get('avaliacoes') || [];
-  const idx = todas.findIndex(a => a.colab === colabAtual && a.semana === semana);
-  if (idx >= 0) todas[idx] = reg; else todas.push(reg);
-  STORE.set('avaliacoes', todas);
+  const btn = document.getElementById('btn-salvar');
+  const textoOriginal = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Salvando…';
+
+  try {
+    await db.collection('avaliacoes').doc(`${colabAtual}_${semana}`).set(reg);
+  } catch (err) {
+    console.error('Erro ao salvar avaliação:', err);
+    alert('Não foi possível salvar a avaliação. Verifique sua conexão com a internet e tente novamente.');
+    btn.disabled = false;
+    btn.textContent = textoOriginal;
+    return;
+  }
 
   // Done
   document.getElementById('form-colab').style.display = 'none';
   const done = document.getElementById('done-lanc');
   done.style.display = 'block';
   done.classList.add('visible');
-  document.getElementById('done-lanc-title').textContent = `${NOMES[colabAtual]} — ${totalPts}/${totalMax} pts`;
+  document.getElementById('done-lanc-title').textContent = `${func.nome} — ${totalPts}/${totalMax} pts`;
   const pct = Math.round(totalPts/totalMax*100);
-  document.getElementById('done-lanc-sub').textContent = `${pct}% · ${semanaStrToLabel(semana)} · Avaliação salva com sucesso.`;
+  const acaoTxt = jaExistia ? 'Avaliação atualizada com sucesso.' : 'Avaliação salva com sucesso.';
+  document.getElementById('done-lanc-sub').textContent = pct > 90
+    ? `${pct}% · ${semanaStrToLabel(semana)} · 🏆 Acima de 90%! Direito a 1 folga no mês seguinte.`
+    : `${pct}% · ${semanaStrToLabel(semana)} · ${acaoTxt}`;
+  btn.disabled = false;
+  btn.textContent = textoOriginal;
 }
 
 function proximoColab() {
-  const ordem = ['victor','lorena','janse','tmanha','ttarde'];
+  const ordem = funcionariosAtivos().map(f => f.id);
+  if (ordem.length === 0) return;
   const idx = ordem.indexOf(colabAtual);
   const prox = ordem[(idx+1) % ordem.length];
   document.getElementById('done-lanc').classList.remove('visible');
@@ -1081,15 +1634,147 @@ function proximoColab() {
 function resetLanc() {
   colabAtual = null;
   notas = {};
-  document.querySelectorAll('.colab-btn').forEach(b => b.className = 'colab-btn');
+  aplicarDestaqueColabBtn(null);
   document.getElementById('form-colab').style.display = 'none';
   document.getElementById('done-lanc').classList.remove('visible');
   document.getElementById('done-lanc').style.display = 'none';
 }
 
+// ========== ALERTAS DE DESEMPENHO CRÍTICO ==========
+function getAlertasCriticos() {
+  const todas = AVALIACOES;
+  const porColab = {};
+  todas.forEach(a => { (porColab[a.colab] = porColab[a.colab] || []).push(a); });
+
+  const alertas = [];
+  Object.entries(porColab).forEach(([colab, avs]) => {
+    const ordenadas = avs.slice().sort((a,b) => a.semana.localeCompare(b.semana));
+    const ultimas = ordenadas.slice(-MIN_SEMANAS_CRITICO);
+    if (ultimas.length === MIN_SEMANAS_CRITICO && ultimas.every(a => a.pct < LIMITE_CRITICO)) {
+      alertas.push({
+        colab,
+        nome: ultimas[ultimas.length-1].nome,
+        semanas: ultimas.map(a => ({ semana: a.semana, pct: a.pct }))
+      });
+    }
+  });
+  return alertas;
+}
+
+function renderAlertasCriticos() {
+  const el = document.getElementById('alertas-criticos');
+  if (!el) return;
+  const alertas = getAlertasCriticos();
+  if (alertas.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = alertas.map(al => `
+    <div class="alert-box alert-red" style="margin-bottom:8px;">
+      <span class="ai">🚨</span>
+      <div>
+        <strong>${al.nome} — desempenho crítico recorrente</strong>
+        <p>Abaixo de ${LIMITE_CRITICO}% por ${al.semanas.length} semanas seguidas: ${al.semanas.map(s => `${semanaStrToLabel(s.semana)} (${s.pct}%)`).join(', ')}. Considere uma conversa de feedback formal.</p>
+      </div>
+    </div>`).join('');
+}
+
+// ========== EVOLUÇÃO DE DESEMPENHO ==========
+function getHistoricoColab(colab) {
+  return AVALIACOES
+    .filter(a => a.colab === colab)
+    .sort((a,b) => a.semana.localeCompare(b.semana));
+}
+
+function renderEvolucaoSeletor() {
+  const el = document.getElementById('evol-colab-sel');
+  if (!el) return;
+  if (FUNCIONARIOS.length === 0) { el.innerHTML = ''; return; }
+  if (!colabEvolucao || !getFuncionario(colabEvolucao)) colabEvolucao = FUNCIONARIOS[0].id;
+  el.innerHTML = FUNCIONARIOS.map(f => {
+    const ativo = f.id === colabEvolucao;
+    const style = ativo ? `background:${f.cor};border-color:${f.cor};color:#fff;` : '';
+    return `<button class="evol-pill" style="${style}" onclick="selecionarColabEvolucao('${f.id}')">${escapeHtml(f.nome)}${f.ativo===false?' (inativo)':''}</button>`;
+  }).join('');
+}
+
+function selecionarColabEvolucao(colab) {
+  colabEvolucao = colab;
+  renderEvolucaoSeletor();
+  renderEvolucaoChart();
+}
+
+function renderEvolucaoChart() {
+  const wrap = document.getElementById('evol-chart-wrap');
+  const sub = document.getElementById('evol-sub');
+  if (!wrap) return;
+  const func = getFuncionario(colabEvolucao);
+  if (!func) { wrap.innerHTML = `<div class="evol-empty">Cadastre um funcionário na aba 👥 Equipe para ver a evolução.</div>`; if (sub) sub.textContent = '—'; return; }
+  const dados = getHistoricoColab(colabEvolucao);
+  if (sub) sub.textContent = `${func.nome} · ${func.unidade}`;
+
+  if (dados.length < 2) {
+    wrap.innerHTML = `<div class="evol-empty">Ainda não há dados suficientes (mínimo 2 semanas avaliadas) para mostrar a evolução de ${escapeHtml(func.nome)}.</div>`;
+    return;
+  }
+
+  const cor = func.cor;
+  const W = 480, H = 180, padL = 30, padR = 14, padT = 18, padB = 26;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const n = dados.length;
+  const xFor = i => padL + (n === 1 ? plotW/2 : (i/(n-1))*plotW);
+  const yFor = pct => padT + plotH - (pct/100)*plotH;
+
+  const pontos = dados.map((d,i) => ({ x: xFor(i), y: yFor(d.pct), pct: d.pct }));
+  const pathD = pontos.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const step = n > 8 ? Math.ceil(n/8) : 1;
+
+  const svg = `
+  <svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Evolução de desempenho de ${escapeHtml(func.nome)}">
+    <line x1="${padL}" y1="${yFor(90).toFixed(1)}" x2="${W-padR}" y2="${yFor(90).toFixed(1)}" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+    <text x="${W-padR}" y="${(yFor(90)-4).toFixed(1)}" text-anchor="end" font-size="9" fill="#92400e" font-family="Inter,sans-serif">90% · folga</text>
+    <line x1="${padL}" y1="${yFor(LIMITE_CRITICO).toFixed(1)}" x2="${W-padR}" y2="${yFor(LIMITE_CRITICO).toFixed(1)}" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+    <text x="${W-padR}" y="${(yFor(LIMITE_CRITICO)-4).toFixed(1)}" text-anchor="end" font-size="9" fill="#dc2626" font-family="Inter,sans-serif">${LIMITE_CRITICO}% · alerta</text>
+    <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#e2e0d8" stroke-width="1"/>
+    <line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#e2e0d8" stroke-width="1"/>
+    <text x="${padL-6}" y="${(yFor(100)+3).toFixed(1)}" text-anchor="end" font-size="9" fill="#8a8880" font-family="Inter,sans-serif">100</text>
+    <text x="${padL-6}" y="${(yFor(0)+3).toFixed(1)}" text-anchor="end" font-size="9" fill="#8a8880" font-family="Inter,sans-serif">0</text>
+    <path d="${pathD}" fill="none" stroke="${cor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pontos.map((p,i) => `
+      <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${cor}" stroke="#fff" stroke-width="2">
+        <title>${semanaStrToLabel(dados[i].semana)}: ${p.pct}%</title>
+      </circle>
+      ${(i===0||i===n-1) ? `<text x="${p.x.toFixed(1)}" y="${(p.y-10).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1a18" font-family="'Space Grotesk',sans-serif">${p.pct}%</text>` : ''}
+      ${(i % step === 0 || i === n-1) ? `<text x="${p.x.toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="8" fill="#8a8880" font-family="Inter,sans-serif">${dados[i].semana.split('-W')[1]}</text>` : ''}
+    `).join('')}
+  </svg>`;
+
+  wrap.innerHTML = `
+    ${svg}
+    <button class="evol-toggle-tabela" onclick="toggleEvolTabela()">Ver dados em tabela</button>
+    <div class="evol-tabela" id="evol-tabela" style="display:none;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="text-align:left;color:var(--muted);"><th style="padding:4px 0;">Semana</th><th style="padding:4px 0;text-align:right;">Pontos</th><th style="padding:4px 0;text-align:right;">%</th></tr></thead>
+        <tbody>
+          ${dados.map(d => `<tr style="border-top:1px solid var(--border);"><td style="padding:4px 0;">${semanaStrToLabel(d.semana)}</td><td style="padding:4px 0;text-align:right;">${d.pontos}/${d.max}</td><td style="padding:4px 0;text-align:right;font-weight:700;color:${d.pct>90?'#d97706':d.pct<LIMITE_CRITICO?'#dc2626':'#1a1a18'}">${d.pct}%</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function toggleEvolTabela() {
+  const el = document.getElementById('evol-tabela');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function atualizarPainelHistorico() {
+  renderAlertasCriticos();
+  renderEvolucaoSeletor();
+  renderEvolucaoChart();
+  renderHistorico();
+}
+
 // ========== HISTÓRICO ==========
 function renderHistorico() {
-  const todas = STORE.get('avaliacoes') || [];
+  const todas = AVALIACOES;
   const cont = document.getElementById('hist-content');
 
   if (todas.length === 0) {
@@ -1128,6 +1813,7 @@ function renderHistorico() {
               <div>
                 <span style="font-weight:700;font-size:13px;">${a.nome}</span>
                 <span style="font-size:11px;color:var(--muted);margin-left:6px;">${a.unidade}</span>
+                ${a.pct > 90 ? '<span class="tag tag-folga">🏆 Folga</span>' : ''}
               </div>
               <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:${cor}">${a.pontos}/${a.max}</span>
             </div>
@@ -1160,7 +1846,7 @@ function selTipoRel(tipo, btn) {
 }
 
 function gerarRelatorio() {
-  const todas = STORE.get('avaliacoes') || [];
+  const todas = AVALIACOES;
   const out = document.getElementById('rel-output');
 
   const filtradas = tipoRel === 'semanal'
@@ -1264,7 +1950,7 @@ function renderScoreCard(a) {
   <div class="score-big-card">
     <div class="sbc-top">
       <div>
-        <div class="sbc-nome">${a.nome} <span class="tag ${tagClass}">${tagLabel}</span></div>
+        <div class="sbc-nome">${a.nome} <span class="tag ${tagClass}">${tagLabel}</span>${a.pct > 90 ? ' <span class="tag tag-folga">🏆 Folga</span>' : ''}</div>
         <div class="sbc-funcao">${a.funcao}</div>
       </div>
       <div style="text-align:right">
@@ -1275,6 +1961,7 @@ function renderScoreCard(a) {
       <div class="sbc-bar-fill" style="width:${a.pct}%;background:${cor}"></div>
     </div>
     <div class="sbc-pct">${a.pct}%</div>
+    ${a.pct > 90 ? `<div class="folga-box">🏆 Acima de 90% — direito a 1 folga no mês seguinte</div>` : ''}
     ${fortes.length > 0 ? `
     <div class="sbc-pontos-fortes">
       <div class="spf-title">✅ Pontos fortes</div>
@@ -1299,7 +1986,7 @@ function montarLinkWA(filtradas, titulo, totalDisc) {
     msg += `🍽 *TECHIN*\n`;
     techin.forEach(a => {
       const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
-      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)\n`;
+      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)${a.pct>90?' 🏆 folga':''}\n`;
       const fracos = a.criterios.filter(c=>c.nota<=2);
       if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
     });
@@ -1310,7 +1997,7 @@ function montarLinkWA(filtradas, titulo, totalDisc) {
     msg += `☕ *TECHOUT*\n`;
     techout.forEach(a => {
       const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
-      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)\n`;
+      msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)${a.pct>90?' 🏆 folga':''}\n`;
       const fracos = a.criterios.filter(c=>c.nota<=2);
       if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
     });
@@ -1323,6 +2010,172 @@ function montarLinkWA(filtradas, titulo, totalDisc) {
   msg += `_Techset · Sistema de Avaliação_`;
 
   return `https://wa.me/?text=${encodeURIComponent(msg)}`;
+}
+
+// ========== EQUIPE (gerenciar funcionários) ==========
+const PALETA_CORES_PADRAO = ['#4f8ef7','#10b981','#d97706','#e8531e','#7c3aed','#ec4899','#0891b2','#84cc16'];
+
+function renderListaFuncionarios() {
+  const el = document.getElementById('lista-funcionarios');
+  if (!el) return;
+  if (FUNCIONARIOS.length === 0) {
+    el.innerHTML = `<div class="empty-state"><span class="es-icon">👥</span><p>Nenhum funcionário cadastrado ainda.<br>Clique em "+ Novo funcionário" para começar.</p></div>`;
+    return;
+  }
+  el.innerHTML = FUNCIONARIOS.map(f => {
+    const total = f.criterios.reduce((s,c) => s+c.max, 0);
+    const inativo = f.ativo === false;
+    return `
+    <div class="card" style="${inativo ? 'opacity:0.55;' : ''}">
+      <div class="card-header">
+        <div class="func-dot" style="background:${f.cor}"></div>
+        <div style="flex:1">
+          <div class="ch-title">${escapeHtml(f.nome)}${inativo ? ' <span class="tag tag-crit">Inativo</span>' : ''}</div>
+          <div class="ch-sub">${escapeHtml(f.unidade)} · ${escapeHtml(f.funcao)} · ${f.criterios.length} critérios (${total} pts)</div>
+        </div>
+      </div>
+      <div class="card-body" style="display:flex;gap:8px;">
+        <button class="btn-novo" style="flex:1;margin:0;padding:9px;font-size:13px;" onclick="abrirFormFuncionario('${f.id}')">✏️ Editar</button>
+        ${inativo
+          ? `<button class="btn-novo" style="flex:1;margin:0;padding:9px;font-size:13px;" onclick="reativarFuncionario('${f.id}')">↩️ Reativar</button>`
+          : `<button class="btn-novo" style="flex:1;margin:0;padding:9px;font-size:13px;color:var(--red);border-color:rgba(220,38,38,0.3);" onclick="desativarFuncionario('${f.id}')">🚫 Desativar</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function linhaCriterioHtml(label, max) {
+  const div = document.createElement('div');
+  div.className = 'ff-crit-row';
+  div.innerHTML = `
+    <input type="text" value="${escapeHtml(label||'')}" placeholder="Nome do critério" oninput="atualizarTotalFuncionario()">
+    <input type="number" min="0" max="100" value="${max||0}" oninput="atualizarTotalFuncionario()">
+    <button type="button" class="ff-crit-remove" onclick="removerLinhaCriterio(this)">×</button>`;
+  return div;
+}
+
+function adicionarLinhaCriterio(label, max) {
+  const list = document.getElementById('ff-criterios-list');
+  list.appendChild(linhaCriterioHtml(label, max));
+  atualizarTotalFuncionario();
+}
+
+function removerLinhaCriterio(btn) {
+  btn.closest('.ff-crit-row').remove();
+  atualizarTotalFuncionario();
+}
+
+function atualizarTotalFuncionario() {
+  const nome = document.getElementById('ff-nome').value.trim();
+  const linhas = [...document.querySelectorAll('#ff-criterios-list .ff-crit-row')];
+  const total = linhas.reduce((s,row) => s + (parseInt(row.querySelector('input[type="number"]').value, 10) || 0), 0);
+  const todosPreenchidos = linhas.length > 0 && linhas.every(row => row.querySelector('input[type="text"]').value.trim().length > 0);
+
+  const totalEl = document.getElementById('ff-total-pts');
+  const hintEl = document.getElementById('ff-total-hint');
+  totalEl.textContent = total;
+  totalEl.style.color = total === 100 ? 'var(--green)' : 'var(--red)';
+  hintEl.textContent = total === 100 ? 'Perfeito!' : 'Deve somar 100';
+
+  document.getElementById('ff-btn-salvar').disabled = !(total === 100 && nome.length > 0 && todosPreenchidos);
+}
+
+function abrirFormFuncionario(id) {
+  const editando = id ? getFuncionario(id) : null;
+  document.getElementById('ff-id-editando').value = id || '';
+  document.getElementById('ff-titulo').textContent = editando ? `Editar ${editando.nome}` : 'Novo funcionário';
+  document.getElementById('ff-nome').value = editando ? editando.nome : '';
+  document.getElementById('ff-unidade').value = editando ? editando.unidade : 'Techin';
+  document.getElementById('ff-funcao').value = editando ? editando.funcao : '';
+  document.getElementById('ff-cor').value = editando ? editando.cor : PALETA_CORES_PADRAO[FUNCIONARIOS.length % PALETA_CORES_PADRAO.length];
+
+  const list = document.getElementById('ff-criterios-list');
+  list.innerHTML = '';
+  const criteriosIniciais = editando ? editando.criterios : [{ label:'', max:0 }];
+  criteriosIniciais.forEach(c => list.appendChild(linhaCriterioHtml(c.label, c.max)));
+
+  document.getElementById('lista-funcionarios-wrap').style.display = 'none';
+  document.getElementById('form-funcionario').style.display = 'block';
+  atualizarTotalFuncionario();
+}
+
+function fecharFormFuncionario() {
+  document.getElementById('form-funcionario').style.display = 'none';
+  document.getElementById('lista-funcionarios-wrap').style.display = 'block';
+  renderListaFuncionarios();
+}
+
+async function salvarFuncionario() {
+  const nome = document.getElementById('ff-nome').value.trim();
+  const unidade = document.getElementById('ff-unidade').value;
+  const funcao = document.getElementById('ff-funcao').value.trim();
+  const cor = document.getElementById('ff-cor').value;
+  const editandoId = document.getElementById('ff-id-editando').value;
+
+  const linhas = [...document.querySelectorAll('#ff-criterios-list .ff-crit-row')];
+  const usados = new Set();
+  const criterios = linhas.map(row => {
+    const label = row.querySelector('input[type="text"]').value.trim();
+    const max = parseInt(row.querySelector('input[type="number"]').value, 10) || 0;
+    const base = slugify(label);
+    let idFinal = base, i = 2;
+    while (usados.has(idFinal)) { idFinal = `${base}_${i}`; i++; }
+    usados.add(idFinal);
+    return { id: idFinal, label, max };
+  });
+
+  const total = criterios.reduce((s,c) => s+c.max, 0);
+  if (total !== 100 || !nome || criterios.some(c => !c.label)) return; // segurança extra (botão já valida)
+
+  const btnSalvar = document.getElementById('ff-btn-salvar');
+  const textoOriginal = btnSalvar.textContent;
+  btnSalvar.disabled = true;
+  btnSalvar.textContent = 'Salvando…';
+
+  try {
+    let id, dados;
+    if (editandoId) {
+      id = editandoId;
+      const atual = getFuncionario(editandoId) || {};
+      dados = { ...atual, id, nome, unidade, funcao, cor, criterios };
+    } else {
+      let base = slugify(nome), i = 2;
+      id = base;
+      while (FUNCIONARIOS.some(f => f.id === id)) { id = `${base}_${i}`; i++; }
+      dados = { id, nome, unidade, funcao, cor, criterios, ativo: true };
+    }
+    await db.collection('funcionarios').doc(id).set(dados);
+    fecharFormFuncionario();
+  } catch (err) {
+    console.error('Erro ao salvar funcionário:', err);
+    alert('Não foi possível salvar. Verifique sua conexão com a internet e tente novamente.');
+  } finally {
+    btnSalvar.disabled = false;
+    btnSalvar.textContent = textoOriginal;
+  }
+}
+
+async function desativarFuncionario(id) {
+  const f = getFuncionario(id);
+  if (!f) return;
+  try {
+    await db.collection('funcionarios').doc(id).update({ ativo: false });
+    if (colabAtual === id) resetLanc();
+  } catch (err) {
+    console.error('Erro ao desativar funcionário:', err);
+    alert('Não foi possível desativar. Verifique sua conexão com a internet e tente novamente.');
+  }
+}
+
+async function reativarFuncionario(id) {
+  const f = getFuncionario(id);
+  if (!f) return;
+  try {
+    await db.collection('funcionarios').doc(id).update({ ativo: true });
+  } catch (err) {
+    console.error('Erro ao reativar funcionário:', err);
+    alert('Não foi possível reativar. Verifique sua conexão com a internet e tente novamente.');
+  }
 }
 
 function getMonthFromWeek(weekStr) {
