@@ -510,7 +510,8 @@
   }
   .sbc-pontos-fracos .spf-title { font-weight: 700; color: var(--red); margin-bottom: 4px; }
   .sbc-pontos-fracos ul { padding-left: 14px; color: var(--muted); }
-  .sbc-pontos-fracos li { margin-bottom: 2px; }
+  .sbc-pontos-fracos li { margin-bottom: 4px; }
+  .sbc-fraco-obs { font-style: italic; color: var(--muted); font-size: 11px; margin-top: 1px; }
 
   .sbc-pontos-fortes {
     background: var(--green-soft);
@@ -953,6 +954,15 @@
       <button class="ss-btn" onclick="navSemana(1)">›</button>
     </div>
 
+    <div class="semana-selector" id="sel-mes" style="display:none">
+      <button class="ss-btn" onclick="navMes(-1)">‹</button>
+      <div style="flex:1;text-align:center">
+        <div class="ss-label">Mês</div>
+        <div class="ss-val" id="ms-val">—</div>
+      </div>
+      <button class="ss-btn" onclick="navMes(1)">›</button>
+    </div>
+
     <div id="rel-output"></div>
 
   </div>
@@ -1301,6 +1311,7 @@ let obsCriterios = {};
 let discordancias = {};
 let tipoRel = 'semanal';
 let semanaRel = getSemanaStr(new Date());
+let mesRel = new Date().toISOString().slice(0,7); // 'YYYY-MM'
 let colabEvolucao = null;
 
 // ========== INIT ==========
@@ -1311,6 +1322,7 @@ semInput.value = getSemanaStr(hoje);
 semInput.max = getSemanaStr(hoje);
 semInput.addEventListener('change', () => { if (colabAtual) selecionarColab(colabAtual); });
 atualizarSemanaDisplay();
+atualizarMesDisplay();
 renderColabGrid();
 // inicializarDados() é chamado pelo listener de autenticação (onAuthStateChanged) assim que o login for confirmado.
 
@@ -1359,6 +1371,25 @@ function navSemana(dir) {
 
 function atualizarSemanaDisplay() {
   document.getElementById('ss-val').textContent = semanaStrToLabel(semanaRel);
+}
+
+function mesStrToLabel(str) {
+  if (!str) return '—';
+  const [ano, mes] = str.split('-').map(Number);
+  const label = new Date(ano, mes - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+function navMes(dir) {
+  const [ano, mes] = mesRel.split('-').map(Number);
+  const d = new Date(ano, mes - 1 + dir, 1);
+  mesRel = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,'0')}`;
+  atualizarMesDisplay();
+  gerarRelatorio();
+}
+
+function atualizarMesDisplay() {
+  document.getElementById('ms-val').textContent = mesStrToLabel(mesRel);
 }
 
 // ========== COLABORADOR ==========
@@ -1842,6 +1873,7 @@ function selTipoRel(tipo, btn) {
   document.getElementById('btn-sem').className = 'rel-tipo-btn' + (tipo === 'semanal' ? ' active-sem' : '');
   document.getElementById('btn-men').className = 'rel-tipo-btn' + (tipo === 'mensal' ? ' active-men' : '');
   document.getElementById('sel-semana').style.display = tipo === 'semanal' ? 'flex' : 'none';
+  document.getElementById('sel-mes').style.display = tipo === 'mensal' ? 'flex' : 'none';
   gerarRelatorio();
 }
 
@@ -1853,19 +1885,19 @@ function gerarRelatorio() {
     ? todas.filter(a => a.semana === semanaRel)
     : todas.filter(a => {
         if (!a.semana) return false;
-        const mesAtual = new Date().toISOString().slice(0,7);
-        return a.semana.startsWith(mesAtual.slice(0,4)) &&
-          getMonthFromWeek(a.semana) === new Date().getMonth();
+        const [anoSel, mesSel] = mesRel.split('-').map(Number);
+        const anoSemana = parseInt(a.semana.split('-W')[0], 10);
+        return anoSemana === anoSel && getMonthFromWeek(a.semana) === (mesSel - 1);
       });
 
   if (filtradas.length === 0) {
-    out.innerHTML = `<div class="empty-state"><span class="es-icon">📭</span><p>Nenhuma avaliação encontrada para ${tipoRel === 'semanal' ? semanaStrToLabel(semanaRel) : 'este mês'}.<br>Lance as avaliações na aba Lançamento.</p></div>`;
+    out.innerHTML = `<div class="empty-state"><span class="es-icon">📭</span><p>Nenhuma avaliação encontrada para ${tipoRel === 'semanal' ? semanaStrToLabel(semanaRel) : mesStrToLabel(mesRel)}.<br>Lance as avaliações na aba Lançamento.</p></div>`;
     return;
   }
 
   const titulo = tipoRel === 'semanal'
     ? `📋 ${semanaStrToLabel(semanaRel)}`
-    : `📈 ${new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`;
+    : `📈 ${mesStrToLabel(mesRel)}`;
 
   // Separar por unidade
   const techin = filtradas.filter(a => a.unidade === 'Techin');
@@ -1970,7 +2002,7 @@ function renderScoreCard(a) {
     ${fracos.length > 0 ? `
     <div class="sbc-pontos-fracos">
       <div class="spf-title">⚠️ Precisa melhorar</div>
-      <ul>${fracos.map(c=>`<li>${c.label}</li>`).join('')}</ul>
+      <ul>${fracos.map(c=>`<li>${c.label}${c.obs ? `<div class="sbc-fraco-obs">💬 "${escapeHtml(c.obs)}"</div>` : ''}</li>`).join('')}</ul>
     </div>` : ''}
     ${a.obs ? `<div class="sbc-obs">💬 "${a.obs}"</div>` : ''}
   </div>`;
@@ -1988,7 +2020,10 @@ function montarLinkWA(filtradas, titulo, totalDisc) {
       const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
       msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)${a.pct>90?' 🏆 folga':''}\n`;
       const fracos = a.criterios.filter(c=>c.nota<=2);
-      if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+      if (fracos.length > 0) {
+        msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+        fracos.filter(c=>c.obs).forEach(c => { msg += `      💬 "${c.obs}"\n`; });
+      }
     });
     msg += '\n';
   }
@@ -1999,7 +2034,10 @@ function montarLinkWA(filtradas, titulo, totalDisc) {
       const icon = a.pct>=80?'✅':a.pct>=60?'⚠️':'❌';
       msg += `${icon} ${a.nome}: ${a.pontos}/${a.max} pts (${a.pct}%)${a.pct>90?' 🏆 folga':''}\n`;
       const fracos = a.criterios.filter(c=>c.nota<=2);
-      if (fracos.length > 0) msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+      if (fracos.length > 0) {
+        msg += `   ↳ Atenção: ${fracos.map(c=>c.label).join(', ')}\n`;
+        fracos.filter(c=>c.obs).forEach(c => { msg += `      💬 "${c.obs}"\n`; });
+      }
     });
     if (totalDisc > 0) msg += `\n⚠️ ${totalDisc} discordância${totalDisc>1?'s':''} de turno no período\n`;
     msg += '\n';
